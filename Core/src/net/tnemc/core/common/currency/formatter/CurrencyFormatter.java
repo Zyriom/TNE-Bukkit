@@ -1,7 +1,7 @@
 package net.tnemc.core.common.currency.formatter;
 
 import net.tnemc.core.TNE;
-import net.tnemc.core.common.currency.TNECurrency;
+import net.tnemc.core.common.currency.Currency;
 import net.tnemc.core.common.currency.formatter.impl.ColourRule;
 import net.tnemc.core.common.currency.formatter.impl.DecimalRule;
 import net.tnemc.core.common.currency.formatter.impl.MajorAmountRule;
@@ -53,11 +53,11 @@ public class CurrencyFormatter {
     rulesMap.put(rule.name(), rule);
   }
 
-  public static String format(TNECurrency currency, String world, BigDecimal amount, String player) {
+  public static String format(Currency currency, String world, BigDecimal amount, String player) {
     return format(currency, amount, null, player);
   }
 
-  public static String format(TNECurrency currency, BigDecimal amount, Location location, String player) {
+  public static String format(Currency currency, BigDecimal amount, Location location, String player) {
     //TNE.debug("Format: " + currency.getFormat());
     amount = amount.setScale(currency.decimalPlaces(), BigDecimal.ROUND_CEILING);
 
@@ -70,7 +70,7 @@ public class CurrencyFormatter {
     return format;
   }
 
-  public static String format(TNECurrency currency, BigDecimal amount, Location location, String player, String... rules) {
+  public static String format(Currency currency, BigDecimal amount, Location location, String player, String... rules) {
     amount = amount.setScale(currency.decimalPlaces(), BigDecimal.ROUND_CEILING);
 
     String format = currency.getFormat();
@@ -84,11 +84,11 @@ public class CurrencyFormatter {
     return format;
   }
 
-  public static BigDecimal round(TNECurrency currency, BigDecimal amount) {
+  public static BigDecimal round(Currency currency, BigDecimal amount) {
     return amount.setScale(currency.decimalPlaces(), BigDecimal.ROUND_CEILING);
   }
 
-  public static String parseAmount(TNECurrency currency, String world, String amount) {
+  public static String parseAmount(Currency currency, String world, String amount) {
     if(amount.length() > 40) return "Messages.Money.ExceedsCurrencyMaximum";
     if(isBigDecimal(amount, currency)) {
       BigDecimal translated = translateBigDecimal(amount, currency);
@@ -105,7 +105,7 @@ public class CurrencyFormatter {
     return fromShort(currency, updated);
   }
 
-  private static BigDecimal parseWeight(TNECurrency currency, BigDecimal decimal) {
+  private static BigDecimal parseWeight(Currency currency, BigDecimal decimal) {
     String[] amountStr = (decimal.toPlainString() + (decimal.toPlainString().contains(".")? "" : ".00")).split("\\.");
     BigInteger major = new BigInteger(amountStr[0]);
     // Get a string that is exactly as long as there are decimal points.
@@ -133,14 +133,14 @@ public class CurrencyFormatter {
     return new BigDecimal(toParse);
   }
 
-  private static String fromShort(TNECurrency currency, String amount) {
+  private static String fromShort(Currency currency, String amount) {
     int charIndex = currency.getPrefixes().indexOf(amount.charAt(amount.length() - 1)) + 1;
     String sub = amount.substring(0, amount.length() - 1);
     String form = "%-" + ((charIndex * 3) + sub.length()) + "s";
     return String.format(form, sub).replace(' ', '0');
   }
 
-  private static boolean isBigDecimal(String value, TNECurrency currency) {
+  private static boolean isBigDecimal(String value, Currency currency) {
     try {
       new BigDecimal(value.replace(currency.getDecimal(), "."));
       return true;
@@ -153,7 +153,7 @@ public class CurrencyFormatter {
     return translateBigDecimal(value, TNE.manager().currencyManager().get(world));
   }
 
-  public static BigDecimal translateBigDecimal(String value, TNECurrency currency) {
+  public static BigDecimal translateBigDecimal(String value, Currency currency) {
     return new BigDecimal(value);
   }
 }

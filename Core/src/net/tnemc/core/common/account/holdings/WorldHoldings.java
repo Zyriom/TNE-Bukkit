@@ -1,4 +1,4 @@
-package net.tnemc.core.common.account.balance;
+package net.tnemc.core.common.account.holdings;
 
 import net.tnemc.core.common.currency.Currency;
 import net.tnemc.core.common.io.cache.RefreshConcurrentMap;

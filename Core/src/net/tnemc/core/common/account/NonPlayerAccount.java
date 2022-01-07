@@ -12,6 +12,10 @@ import java.util.UUID;
 public class NonPlayerAccount extends SharedAccount {
 
   public NonPlayerAccount(UUID identifier, String name) {
-    super(identifier, name);
+    super(identifier, name, identifier);
+  }
+
+  public NonPlayerAccount(UUID identifier, String name, UUID owner) {
+    super(identifier, name, owner);
   }
 }

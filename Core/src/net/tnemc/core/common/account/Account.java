@@ -2,7 +2,8 @@ package net.tnemc.core.common.account;
 
 import net.tnemc.core.TNECore;
 import net.tnemc.core.common.EconomyManager;
-import net.tnemc.core.common.account.balance.HoldingsManager;
+import net.tnemc.core.common.account.holdings.HoldingsManager;
+import net.tnemc.core.common.account.holdings.handlers.HoldingsHandler;
 import net.tnemc.core.common.currency.Currency;
 import net.tnemc.core.common.currency.CurrencyType;
 import net.tnemc.core.common.io.Datable;
@@ -12,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -80,16 +83,20 @@ public class Account implements Datable<String, Account> {
 
   public BigDecimal getHoldings(@NotNull String world, @NotNull Currency currency) {
 
-    final Optional<CurrencyType> type = currency.getType();
+    final boolean core = (isPlayer() && ((PlayerAccount)this).isInitializing());
+    BigDecimal holdings = BigDecimal.ZERO;
 
-    if(type.isPresent()) {
-      try {
-        type.get().getHoldings(this, resolveWorld(world), currency, false);
-      } catch(SQLException e) {
-        e.printStackTrace();
+    for(Map.Entry<Integer, List<HoldingsHandler>> entry : EconomyManager.instance().getHoldingsHandlers()
+                                                                        .descendingMap().entrySet()) {
+      for(HoldingsHandler handler : entry.getValue()) {
+        if(!core || handler.coreHandler()) {
+          if(handler.userContains().equalsIgnoreCase("") || name.contains(handler.userContains())) {
+            holdings = holdings.add(handler.getHoldings(this, world, currency, false));
+          }
+        }
       }
     }
-    return BigDecimal.ZERO;
+    return holdings;
   }
 
   public boolean hasHoldings(@NotNull BigDecimal amount) {
@@ -111,6 +118,109 @@ public class Account implements Datable<String, Account> {
 
   public String world() {
     return resolveWorld(TNECore.connector().defaultWorld());
+  }
+
+  public boolean addHoldings(BigDecimal amount) {
+    if(amount.equals(BigDecimal.ZERO)) return true;
+    if(!status.canReceive()) return false;
+
+    final String world = world();
+    Currency currency = EconomyManager.instance().currencyManager().getDefault(world);
+    setHoldings(getHoldings(world, currency).add(amount), world, currency);
+    return true;
+  }
+
+  public boolean addHoldings(BigDecimal amount, String world) {
+    if(amount.equals(BigDecimal.ZERO)) return true;
+    if(!status.canReceive()) return false;
+
+    Currency currency = EconomyManager.instance().currencyManager().getDefault(world);
+    setHoldings(getHoldings(world, currency).add(amount), world, currency);
+    return true;
+  }
+
+  public boolean addHoldings(BigDecimal amount, Currency currency) {
+    if(amount.equals(BigDecimal.ZERO)) return true;
+    if(!status.canReceive()) return false;
+
+    final String world = world();
+    setHoldings(getHoldings(world, currency).add(amount), world, currency);
+    return true;
+  }
+
+  public boolean addHoldings(BigDecimal amount, Currency currency, String world) {
+    if(amount.equals(BigDecimal.ZERO)) return true;
+    if(!status.canReceive()) return false;
+
+    setHoldings(getHoldings(world, currency).add(amount), world, currency);
+    return true;
+  }
+
+  public boolean removeHoldings(BigDecimal amount) {
+    if(amount.equals(BigDecimal.ZERO)) return true;
+    if(!status.canUse()) return false;
+
+    final String world = world();
+    final Currency currency = EconomyManager.instance().currencyManager().getDefault(world);
+    if(hasHoldings(amount, world, currency)) {
+
+      removeHoldings(amount, currency, world);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean removeHoldings(BigDecimal amount, String world) {
+    if(amount.equals(BigDecimal.ZERO)) return true;
+    if(!status.canUse()) return false;
+
+    final Currency currency = EconomyManager.instance().currencyManager().getDefault(world);
+    if(hasHoldings(amount, world, currency)) {
+
+      removeHoldings(amount, currency, world);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean removeHoldings(BigDecimal amount, Currency currency) {
+    if(amount.equals(BigDecimal.ZERO)) return true;
+    if(!status.canUse()) return false;
+
+    final String world = world();
+    if(hasHoldings(amount, world, currency)) {
+
+      removeHoldings(amount, currency, world);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean removeHoldings(BigDecimal amount, String world, Currency currency) {
+    if(amount.equals(BigDecimal.ZERO)) return true;
+    if(!status.canUse()) return false;
+
+    if(hasHoldings(amount, world, currency)) {
+      removeHoldings(amount, currency, world);
+      return true;
+    }
+    return false;
+  }
+
+  private void removeHoldings(BigDecimal amount, Currency currency, String world) {
+    BigDecimal left = amount;
+    for(Map.Entry<Integer, List<HoldingsHandler>> entry : EconomyManager.instance().getHoldingsHandlers()
+        .descendingMap().entrySet()) {
+
+      if (left.compareTo(BigDecimal.ZERO) <= 0) break;
+      for (HoldingsHandler handler : entry.getValue()) {
+        if (left.compareTo(BigDecimal.ZERO) <= 0) break;
+
+        if(!handler.userContains().equalsIgnoreCase("") || name.contains(handler.userContains())) {
+          left = handler.removeHoldings(this, world, currency, left);
+        }
+      }
+    }
   }
 
   /**

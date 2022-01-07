@@ -1,6 +1,6 @@
 package net.tnemc.core.common.io.cache.listeners;
 
-import net.tnemc.core.common.account.balance.CurrencyHoldings;
+import net.tnemc.core.common.account.holdings.CurrencyHoldings;
 import net.tnemc.core.common.io.cache.RefreshMapListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

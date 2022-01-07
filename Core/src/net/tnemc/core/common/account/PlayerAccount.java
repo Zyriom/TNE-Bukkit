@@ -19,8 +19,8 @@ public class PlayerAccount extends Account {
   protected long lastOnline;
   protected String language;
 
-  //Is this player logging in currently?
-  protected boolean loggingIn;
+  //Are the player balances being initialized?
+  protected boolean initializing;
 
   //Has this player died?
   protected boolean dead;
@@ -68,12 +68,12 @@ public class PlayerAccount extends Account {
     this.language = language;
   }
 
-  public boolean isLoggingIn() {
-    return loggingIn;
+  public boolean isInitializing() {
+    return initializing;
   }
 
-  public void setLoggingIn(boolean loggingIn) {
-    this.loggingIn = loggingIn;
+  public void setInitializing(boolean initializing) {
+    this.initializing = initializing;
   }
 
   public boolean isDead() {

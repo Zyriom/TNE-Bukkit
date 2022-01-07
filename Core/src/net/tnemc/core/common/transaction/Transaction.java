@@ -3,6 +3,7 @@ package net.tnemc.core.common.transaction;
 
 import net.tnemc.core.common.io.Datable;
 import net.tnemc.core.common.io.Queryable;
+import net.tnemc.core.common.transaction.charge.Charge;
 import net.tnemc.core.common.transaction.consumer.TransactionResult;
 
 import java.math.BigDecimal;

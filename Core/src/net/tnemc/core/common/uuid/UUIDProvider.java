@@ -1,6 +1,6 @@
 package net.tnemc.core.common.uuid;
 
-import net.tnemc.core.common.EconomyManager;
+import net.tnemc.core.TNECore;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -68,7 +68,7 @@ public interface UUIDProvider {
    * @return True if someone with the specified username has played before,
    * otherwise false.
    */
-  boolean playedBefore(final String name);
+  boolean hasPlayed(final String name);
 
   /**
    * Used to determine if a player with the specified username is online.
@@ -109,7 +109,7 @@ public interface UUIDProvider {
    */
   default boolean validate(final String name) {
     if(name.length() >= 3 && name.length() <= 16) {
-      return EconomyManager.connector().playerMatcher().matcher(name).matches();
+      return TNECore.connector().playerMatcher().matcher(name).matches();
     }
     return false;
   }

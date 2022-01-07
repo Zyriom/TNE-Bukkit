@@ -16,6 +16,7 @@ public enum AccountStatus {
   LOCKED("Locked", false, false);
 
   private final String name;
+
   /**
    * Whether the account may use balances in their account.
    */

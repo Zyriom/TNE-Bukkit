@@ -1,11 +1,14 @@
 package net.tnemc.core.common;
 
-import net.tnemc.core.common.account.Account;
 import net.tnemc.core.common.account.NonPlayerAccount;
 import net.tnemc.core.common.account.SharedAccount;
-import net.tnemc.core.common.io.cache.RefreshConcurrentMap;
-import net.tnemc.core.common.io.cache.listeners.AccountMapListener;
+import net.tnemc.core.common.account.holdings.handlers.CoreHoldingsHandler;
+import net.tnemc.core.common.account.holdings.handlers.EChestHandler;
+import net.tnemc.core.common.account.holdings.handlers.HoldingsHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -21,23 +24,33 @@ public class EconomyManager {
   //Constants
   public static final Pattern UUID_MATCHER_PATTERN = Pattern.compile("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})");
 
-  private final RefreshConcurrentMap<String, Account> accounts;
+  private final TreeMap<Integer, List<HoldingsHandler>> holdingsHandlers = new TreeMap<>();
 
   /**
    * Instance of the Economy manager.
    */
   private static EconomyManager instance;
 
-  private CurrencyManager currencyManager;
+  private final AccountManager accountManager;
+  private final CurrencyManager currencyManager;
 
   private boolean consolidate = false;
   private boolean cache = true;
 
   public EconomyManager() {
     instance = this;
+    this.accountManager = new AccountManager();
     this.currencyManager = new CurrencyManager();
 
-    accounts = new RefreshConcurrentMap<>(true, 300, new AccountMapListener());
+    //Initialize our built-in handlers.
+    registerHandler(new CoreHoldingsHandler());
+    registerHandler(new EChestHandler());
+  }
+
+  public void registerHandler(HoldingsHandler handler) {
+    List<HoldingsHandler> handlers = holdingsHandlers.getOrDefault(handler.priority(), new ArrayList<>());
+    handlers.add(handler);
+    holdingsHandlers.put(handler.priority(), handlers);
   }
 
   public ConcurrentHashMap<String, NonPlayerAccount> findNonPlayers() {
@@ -48,12 +61,20 @@ public class EconomyManager {
     return null;
   }
 
+  public TreeMap<Integer, List<HoldingsHandler>> getHoldingsHandlers() {
+    return holdingsHandlers;
+  }
+
   public static EconomyManager instance() {
     return instance;
   }
 
   public CurrencyManager currencyManager() {
     return currencyManager;
+  }
+
+  public AccountManager accountManager() {
+    return accountManager;
   }
 
   public boolean canConsolidate() {

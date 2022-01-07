@@ -18,6 +18,7 @@ import net.tnemc.core.common.compatibility.ServerConnector;
 import net.tnemc.core.common.io.StorageManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,6 +38,10 @@ public class TNECore {
   private ServerInformation information;
 
   private EconomyManager manager;
+
+  private File directory;
+
+  //TODO: Constructor here.
 
   /**
    * The implementation's {@link ServerConnector}.
@@ -70,5 +75,9 @@ public class TNECore {
 
   public Optional<PlayerProvider> findPlayer(@NotNull UUID identifier) {
     return connector().findPlayer(identifier);
+  }
+
+  public static File directory() {
+    return instance.directory;
   }
 }

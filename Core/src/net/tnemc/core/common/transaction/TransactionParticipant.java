@@ -1,5 +1,7 @@
 package net.tnemc.core.common.transaction;
 
+import net.tnemc.core.common.transaction.charge.Charge;
+
 import java.util.UUID;
 
 /**

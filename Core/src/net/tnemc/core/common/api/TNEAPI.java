@@ -1,5 +1,8 @@
 package net.tnemc.core.common.api;
 
+import net.tnemc.core.TNECore;
+import net.tnemc.core.common.EconomyManager;
+import net.tnemc.core.common.currency.Currency;
 import net.tnemc.core.common.currency.CurrencyType;
 import net.tnemc.core.common.currency.formatter.CurrencyFormatter;
 import net.tnemc.core.common.transaction.tax.TaxEntry;
@@ -30,10 +33,10 @@ import java.util.UUID;
 @Deprecated
 public class TNEAPI {
 
-  private TNE plugin;
+  private TNECore core;
 
-  public TNEAPI(TNE plugin) {
-    this.plugin = plugin;
+  public TNEAPI(TNECore core) {
+    this.core = core;
   }
 
 
@@ -74,9 +77,9 @@ public class TNEAPI {
   }
 
   /**
-   * Checks to see if a {@link TNECurrency} exists with this name.
+   * Checks to see if a {@link Currency} exists with this name.
    *
-   * @param name The name of the {@link TNECurrency} to search for.
+   * @param name The name of the {@link Currency} to search for.
    * @return True if the currency exists, else false.
    */
   public boolean hasCurrency(String name) {
@@ -84,9 +87,9 @@ public class TNEAPI {
   }
 
   /**
-   * Checks to see if a {@link TNECurrency} exists with this name.
-   * @param name The name of the {@link TNECurrency} to search for.
-   * @param world The name of the {@link World} to check for this {@link TNECurrency} in.
+   * Checks to see if a {@link Currency} exists with this name.
+   * @param name The name of the {@link Currency} to search for.
+   * @param world The name of the world to check for this {@link Currency} in.
    * @return True if the currency exists, else false.
    */
   public boolean hasCurrency(String name, String world) {
@@ -94,66 +97,66 @@ public class TNEAPI {
   }
 
   /**
-   * Finds the default {@link TNECurrency} for the server.
-   * @return The default {@link TNECurrency} for the server.
+   * Finds the default {@link Currency} for the server.
+   * @return The default {@link Currency} for the server.
    */
-  public TNECurrency getDefault() {
+  public Currency getDefault() {
     return TNE.manager().currencyManager().get(plugin.defaultWorld);
   }
 
   /**
-   * Finds the default {@link TNECurrency} for a {@link World}
-   * @param world The name of the {@link World} to use.
-   * @return The default {@link TNECurrency} for this {@link World}.
+   * Finds the default {@link Currency} for a world
+   * @param world The name of the world to use.
+   * @return The default {@link Currency} for this world.
    */
-  public TNECurrency getDefault(String world) {
+  public Currency getDefault(String world) {
     return TNE.manager().currencyManager().get(world);
   }
 
   /**
-   * Grabs a {@link Set} of {@link TNECurrency} objects that exist.
-   * @return A Set containing all the {@link TNECurrency} objects that exist on this server.
+   * Grabs a {@link Set} of {@link Currency} objects that exist.
+   * @return A Set containing all the {@link Currency} objects that exist on this server.
    */
-  public Set<TNECurrency> getCurrencies() {
+  public Set<Currency> getCurrencies() {
     return new HashSet<>(TNE.manager().currencyManager().getCurrencies());
   }
 
   /**
-   * Grabs a {@link Set} of {@link TNECurrency} objects that exist in a {@link World}
-   * @param world The name of the {@link World} to use in this search.
-   * @return A Set containing all the {@link TNECurrency} objects that exist on this {@link World}.
+   * Grabs a {@link Set} of {@link Currency} objects that exist in a world
+   * @param world The name of the world to use in this search.
+   * @return A Set containing all the {@link Currency} objects that exist on this world.
    */
-  public Set<TNECurrency> getCurrencies(String world) {
+  public Set<Currency> getCurrencies(String world) {
     return new HashSet<>(TNE.manager().currencyManager().getWorldCurrencies(world));
   }
 
   /**
-   * Checks to see if a {@link TNECurrency} has the specified tier.
+   * Checks to see if a {@link Currency} has the specified tier.
    * @param name The name of the {@link TNETier} to search for.
-   * @param currency The {@link TNECurrency} to search
+   * @param currency The {@link Currency} to search
    * @return True if the tier exists, otherwise false.
    */
-  public boolean hasTier(String name, TNECurrency currency) {
+  public boolean hasTier(String name, Currency currency) {
     return currency.hasTier(name);
   }
 
   /**
-   * Checks to see if a {@link TNECurrency} has the specified tier.
+   * Checks to see if a {@link Currency} has the specified tier.
    * @param name The name of the {@link TNETier} to search for.
-   * @param currency The {@link TNECurrency} to search
-   * @param world The name of the {@link World} to use for search purposes.
+   * @param currency The {@link Currency} to search
+   * @param world The name of the world to use for search purposes.
    * @return True if the tier exists, otherwise false.
    */
-  public boolean hasTier(String name, TNECurrency currency, String world) {
+  public boolean hasTier(String name, Currency currency, String world) {
     return currency.hasTier(name);
   }
 
   /**
-   * Returns a {@link Set} of {@link TNETier} objects associated with the specified {@link TNECurrency}.
-   * @param currency The {@link TNECurrency} to grab the tiers from.
-   * @return A Set containing all the {@link TNETier} objects belonging to this {@link TNECurrency}.
+   * Returns a {@link Set} of {@link TNETier} objects associated with the specified {@link Currency}.
+   * @param currency The {@link Currency} to grab the tiers from.
+   * @return A Set containing all the {@link TNETier} objects belonging to this {@link Currency}.
    */
-  public Set<TNETier> getTiers(TNECurrency currency) {
+  public Set<TNETier> getTiers(Currency currency) {
     return currency.getTiers();
   }
 
@@ -246,21 +249,21 @@ public class TNEAPI {
   /**
    * Formats a monetary amount into a more text-friendly version.
    * @param amount The amount of currency to format.
-   * @param world The {@link World} in which this format operation is occurring.
+   * @param world The world in which this format operation is occurring.
    * @return The formatted amount.
    */
   public String format(BigDecimal amount, String world) {
-    return CurrencyFormatter.format(TNE.manager().currencyManager().get(world), world, amount, "");
+    return CurrencyFormatter.format(EconomyManager.instance().currencyManager().getDefault(world), world, amount, "");
   }
 
   /**
    * Formats a monetary amount into a more text-friendly version.
    * @param amount The amount of currency to format.
-   * @param currency The {@link TNECurrency} associated with the amount to be formatted.
-   * @param world The {@link World} in which this format operation is occuring.
+   * @param currency The {@link Currency} associated with the amount to be formatted.
+   * @param world The world in which this format operation is occuring.
    * @return The formatted amount.
    */
-  public String format(BigDecimal amount, TNECurrency currency, String world) {
+  public String format(BigDecimal amount, Currency currency, String world) {
     return CurrencyFormatter.format(currency, world, amount, "");
   }
 
@@ -276,7 +279,7 @@ public class TNEAPI {
   /**
    * Used to get the balance of an account.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
-   * @param world The name of the {@link World} associated with the balance.
+   * @param world The name of the world associated with the balance.
    * @return The balance of the account.
    */
   public BigDecimal getHoldings(String identifier, String world) {
@@ -286,21 +289,21 @@ public class TNEAPI {
   /**
    * Used to get the balance of an account.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
-   * @param world The name of the {@link World} associated with the balance.
-   * @param currency The {@link TNECurrency} object associated with the balance.
+   * @param world The name of the world associated with the balance.
+   * @param currency The {@link Currency} object associated with the balance.
    * @return The balance of the account.
    */
-  public BigDecimal getHoldings(String identifier, String world, TNECurrency currency) {
-    return TNE.manager().getAccount(IDFinder.getID(identifier)).getHoldings(WorldFinder.getWorldName(world, WorldVariant.BALANCE), currency);
+  public BigDecimal getHoldings(String identifier, String world, Currency currency) {
+    return TNE.manager().getAccount(IDFinder.getID(identifier)).getHoldings(world, currency);
   }
 
   /**
    * Used to get the balance of an account.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
-   * @param currency The {@link TNECurrency} object associated with the balance.
-   * @return The balance of the account for the specified {@link TNECurrency}.
+   * @param currency The {@link Currency} object associated with the balance.
+   * @return The balance of the account for the specified {@link Currency}.
    */
-  public BigDecimal getHoldings(String identifier, TNECurrency currency) {
+  public BigDecimal getHoldings(String identifier, Currency currency) {
     UUID id = IDFinder.getID(identifier);
     return TNE.manager().getAccount(id).getHoldings(WorldFinder.getWorldName(plugin.defaultWorld, WorldVariant.BALANCE), currency);
   }
@@ -319,21 +322,21 @@ public class TNEAPI {
    * Used to determine if an account has at least an amount of funds.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount The amount you wish to use for this check.
-   * @param world The name of the {@link World} associated with the amount.
+   * @param world The name of the world associated with the amount.
    * @return True if the account has at least the specified amount of funds, otherwise false.
    */
   public boolean hasHoldings(String identifier, BigDecimal amount, String world) {
-    return TNE.manager().getAccount(IDFinder.getID(identifier)).hasHoldings(amount, WorldFinder.getWorldName(world, WorldVariant.BALANCE));
+    return TNE.manager().getAccount(IDFinder.getID(identifier)).hasHoldings(amount, world);
   }
 
   /**
    * Used to determine if an account has at least an amount of funds.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount The amount you wish to use for this check.
-   * @param currency The {@link TNECurrency} object associated with the amount.
+   * @param currency The {@link Currency} object associated with the amount.
    * @return True if the account has at least the specified amount of funds, otherwise false.
    */
-  public boolean hasHoldings(String identifier, BigDecimal amount, TNECurrency currency) {
+  public boolean hasHoldings(String identifier, BigDecimal amount, Currency currency) {
     return TNE.manager().getAccount(IDFinder.getID(identifier)).hasHoldings(amount, currency);
   }
 
@@ -341,11 +344,11 @@ public class TNEAPI {
    * Used to determine if an account has at least an amount of funds.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount The amount you wish to use for this check.
-   * @param currency The {@link TNECurrency} object associated with the amount.
-   * @param world The name of the {@link World} associated with the amount.
+   * @param currency The {@link Currency} object associated with the amount.
+   * @param world The name of the world associated with the amount.
    * @return True if the account has at least the specified amount of funds, otherwise false.
    */
-  public boolean hasHoldings(String identifier, BigDecimal amount, TNECurrency currency, String world) {
+  public boolean hasHoldings(String identifier, BigDecimal amount, Currency currency, String world) {
     return TNE.manager().getAccount(IDFinder.getID(identifier)).hasHoldings(amount, currency, WorldFinder.getWorldName(world, WorldVariant.BALANCE));
   }
 
@@ -363,7 +366,7 @@ public class TNEAPI {
    * Used to add funds to an account.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount The amount you wish to add to this account.
-   * @param world The name of the {@link World} associated with the amount.
+   * @param world The name of the world associated with the amount.
    * @return True if the funds were added to the account, otherwise false.
    */
   public boolean addHoldings(String identifier, BigDecimal amount, String world) {
@@ -374,10 +377,10 @@ public class TNEAPI {
    * Used to add funds to an account.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount The amount you wish to add to this account.
-   * @param currency The {@link TNECurrency} object associated with the amount.
+   * @param currency The {@link Currency} object associated with the amount.
    * @return True if the funds were added to the account, otherwise false.
    */
-  public boolean addHoldings(String identifier, BigDecimal amount, TNECurrency currency) {
+  public boolean addHoldings(String identifier, BigDecimal amount, Currency currency) {
     return TNE.manager().getAccount(IDFinder.getID(identifier)).addHoldings(amount, currency);
   }
 
@@ -385,11 +388,11 @@ public class TNEAPI {
    * Used to add funds to an account.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount The amount you wish to add to this account.
-   * @param currency The {@link TNECurrency} object associated with the amount.
-   * @param world The name of the {@link World} associated with the amount.
+   * @param currency The {@link Currency} object associated with the amount.
+   * @param world The name of the world associated with the amount.
    * @return True if the funds were added to the account, otherwise false.
    */
-  public boolean addHoldings(String identifier, BigDecimal amount, TNECurrency currency, String world) {
+  public boolean addHoldings(String identifier, BigDecimal amount, Currency currency, String world) {
     return TNE.manager().getAccount(IDFinder.getID(identifier)).addHoldings(amount, currency, WorldFinder.getWorldName(world, WorldVariant.BALANCE));
   }
 
@@ -411,7 +414,7 @@ public class TNEAPI {
    *
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount     The amount you wish to add to this account.
-   * @param world      The name of the {@link World} associated with the amount.
+   * @param world      The name of the world associated with the amount.
    * @return True if a call to the corresponding addHoldings method would return true, otherwise false.
    */
   public boolean canAddHoldings(String identifier, BigDecimal amount, String world) {
@@ -424,10 +427,10 @@ public class TNEAPI {
    *
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount     The amount you wish to add to this account.
-   * @param currency   The {@link TNECurrency} object associated with the amount.
+   * @param currency   The {@link Currency} object associated with the amount.
    * @return True if a call to the corresponding addHoldings method would return true, otherwise false.
    */
-  public boolean canAddHoldings(String identifier, BigDecimal amount, TNECurrency currency) {
+  public boolean canAddHoldings(String identifier, BigDecimal amount, Currency currency) {
     return true;
   }
 
@@ -437,11 +440,11 @@ public class TNEAPI {
    *
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount     The amount you wish to add to this account.
-   * @param currency   The {@link TNECurrency} object associated with the amount.
-   * @param world      The name of the {@link World} associated with the amount.
+   * @param currency   The {@link Currency} object associated with the amount.
+   * @param world      The name of the world associated with the amount.
    * @return True if a call to the corresponding addHoldings method would return true, otherwise false.
    */
-  public boolean canAddHoldings(String identifier, BigDecimal amount, TNECurrency currency, String world) {
+  public boolean canAddHoldings(String identifier, BigDecimal amount, Currency currency, String world) {
     return true;
   }
 
@@ -459,7 +462,7 @@ public class TNEAPI {
    * Used to remove funds from an account.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount The amount you wish to remove from this account.
-   * @param world The name of the {@link World} associated with the amount.
+   * @param world The name of the world associated with the amount.
    * @return True if the funds were removed from the account, otherwise false.
    */
   public boolean removeHoldings(String identifier, BigDecimal amount, String world) {
@@ -470,10 +473,10 @@ public class TNEAPI {
    * Used to remove funds from an account.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount The amount you wish to remove from this account.
-   * @param currency The {@link TNECurrency} object associated with the amount.
+   * @param currency The {@link Currency} object associated with the amount.
    * @return True if the funds were removed from the account, otherwise false.
    */
-  public boolean removeHoldings(String identifier, BigDecimal amount, TNECurrency currency) {
+  public boolean removeHoldings(String identifier, BigDecimal amount, Currency currency) {
     return TNE.manager().getAccount(IDFinder.getID(identifier)).removeHoldings(amount, currency);
   }
 
@@ -481,11 +484,11 @@ public class TNEAPI {
    * Used to remove funds from an account.
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount The amount you wish to remove from this account.
-   * @param currency The {@link TNECurrency} object associated with the amount.
-   * @param world The name of the {@link World} associated with the amount.
+   * @param currency The {@link Currency} object associated with the amount.
+   * @param world The name of the world associated with the amount.
    * @return True if the funds were removed from the account, otherwise false.
    */
-  public boolean removeHoldings(String identifier, BigDecimal amount, TNECurrency currency, String world) {
+  public boolean removeHoldings(String identifier, BigDecimal amount, Currency currency, String world) {
     return TNE.manager().getAccount(IDFinder.getID(identifier)).removeHoldings(amount, currency, WorldFinder.getWorldName(world, WorldVariant.BALANCE));
   }
 
@@ -499,7 +502,7 @@ public class TNEAPI {
    */
   public boolean canRemoveHoldings(String identifier, BigDecimal amount) {
     String world = plugin.defaultWorld;
-    TNECurrency currency = TNE.manager().currencyManager().get(world);
+    Currency currency = TNE.manager().currencyManager().get(world);
     return hasCurrency(currency.name(), world) && hasHoldings(identifier, amount, currency, WorldFinder.getWorldName(world, WorldVariant.BALANCE));
   }
 
@@ -509,11 +512,11 @@ public class TNEAPI {
    *
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount     The amount you wish to remove from this account.
-   * @param world      The name of the {@link World} associated with the amount.
+   * @param world      The name of the world associated with the amount.
    * @return True if a call to the corresponding removeHoldings method would return true, otherwise false.
    */
   public boolean canRemoveHoldings(String identifier, BigDecimal amount, String world) {
-    TNECurrency currency = TNE.manager().currencyManager().get(world);
+    Currency currency = TNE.manager().currencyManager().get(world);
     return hasCurrency(currency.name(), world) && hasHoldings(identifier, amount, currency, WorldFinder.getWorldName(world, WorldVariant.BALANCE));
   }
 
@@ -523,10 +526,10 @@ public class TNEAPI {
    *
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount     The amount you wish to remove from this account.
-   * @param currency   The {@link TNECurrency} object associated with the amount.
+   * @param currency   The {@link Currency} object associated with the amount.
    * @return True if a call to the corresponding removeHoldings method would return true, otherwise false.
    */
-  public boolean canRemoveHoldings(String identifier, BigDecimal amount, TNECurrency currency) {
+  public boolean canRemoveHoldings(String identifier, BigDecimal amount, Currency currency) {
     return hasCurrency(currency.name()) && hasHoldings(identifier, amount, currency);
   }
 
@@ -536,11 +539,11 @@ public class TNEAPI {
    *
    * @param identifier The identifier of the account. This may be a {@link UUID}, or a player's name.
    * @param amount     The amount you wish to remove from this account.
-   * @param currency   The {@link TNECurrency} object associated with the amount.
-   * @param world      The name of the {@link World} associated with the amount.
+   * @param currency   The {@link Currency} object associated with the amount.
+   * @param world      The name of the world associated with the amount.
    * @return True if a call to the corresponding removeHoldings method would return true, otherwise false.
    */
-  public boolean canRemoveHoldings(String identifier, BigDecimal amount, TNECurrency currency, String world) {
+  public boolean canRemoveHoldings(String identifier, BigDecimal amount, Currency currency, String world) {
     return hasCurrency(currency.name(), world) && hasHoldings(identifier, amount, currency, WorldFinder.getWorldName(world, WorldVariant.BALANCE));
   }
 
@@ -711,47 +714,47 @@ public class TNEAPI {
   }
 
   /**
-   * Register a {@link TNECurrency}  to be used by other plugins.
+   * Register a {@link Currency}  to be used by other plugins.
    *
-   * @param currency The {@link TNECurrency} to register.
-   * @return True if the {@link TNECurrency} was registered, otherwise false.
+   * @param currency The {@link Currency} to register.
+   * @return True if the {@link Currency} was registered, otherwise false.
    */
-  public boolean registerCurrency(TNECurrency currency) {
+  public boolean registerCurrency(Currency currency) {
     return registerCurrency(currency, plugin.defaultWorld);
   }
 
   /**
-   * Register a {@link TNECurrency}  to be used by other plugins.
+   * Register a {@link Currency}  to be used by other plugins.
    *
-   * @param currency The {@link TNECurrency} to register.
-   * @param world    The name of the {@link World} to use during the registration process.
-   * @return True if the {@link TNECurrency}  was registered, otherwise false.
+   * @param currency The {@link Currency} to register.
+   * @param world    The name of the world to use during the registration process.
+   * @return True if the {@link Currency}  was registered, otherwise false.
    */
-  public boolean registerCurrency(TNECurrency currency, String world) {
+  public boolean registerCurrency(Currency currency, String world) {
     TNE.manager().currencyManager().addCurrency(world, currency);
     return true;
   }
 
   /**
-   * Register a {@link TNECurrency} {@link TNETier} to be used by other plugins.
+   * Register a {@link Currency} {@link TNETier} to be used by other plugins.
    *
    * @param tier     The {@link TNETier} to register.
-   * @param currency The {@link TNECurrency} to register this {@link TNETier} under.
+   * @param currency The {@link Currency} to register this {@link TNETier} under.
    * @return True if the {@link TNETier} was registered, otherwise false.
    */
-  public boolean registerTier(TNETier tier, TNECurrency currency) {
+  public boolean registerTier(TNETier tier, Currency currency) {
     return registerTier(tier, currency, plugin.defaultWorld);
   }
 
   /**
-   * Register a {@link TNECurrency} {@link TNETier} to be used by other plugins.
+   * Register a {@link Currency} {@link TNETier} to be used by other plugins.
    *
    * @param tier     The {@link TNETier} to register.
-   * @param currency The {@link TNECurrency} to register this {@link TNETier} under.
-   * @param world    The name of the {@link World} to use during the registration process.
+   * @param currency The {@link Currency} to register this {@link TNETier} under.
+   * @param world    The name of the world to use during the registration process.
    * @return True if the {@link TNETier} was registered, otherwise false.
    */
-  public boolean registerTier(TNETier tier, TNECurrency currency, String world) {
+  public boolean registerTier(TNETier tier, Currency currency, String world) {
     if(TNE.manager().currencyManager().contains(world, currency.name())) {
       if(tier.isMajor()) {
         TNE.manager().currencyManager().get(world, currency.name()).addTNEMajorTier(tier);
@@ -790,7 +793,7 @@ public class TNEAPI {
    */
   public LinkedList<TopBalance> getBalTopPage(String world, int pageLimit, int page) {
     try {
-      return TNE.saveManager().getTNEManager().getTNEProvider().topBalances(WorldFinder.getWorldName(world, WorldVariant.BALANCE), TNE.manager().currencyManager().get(world).name(), pageLimit, page);
+      return TNE.saveManager().getTNEManager().getTNEProvider().topBalances(world, TNE.manager().currencyManager().get(world).name(), pageLimit, page);
     } catch (SQLException e) {
       return new LinkedList<>();
     }
@@ -806,7 +809,7 @@ public class TNEAPI {
    */
   public LinkedList<TopBalance> getBalTopPage(String world, String currency, int pageLimit, int page) {
     try {
-      return TNE.saveManager().getTNEManager().getTNEProvider().topBalances(WorldFinder.getWorldName(world, WorldVariant.BALANCE), currency, pageLimit, page);
+      return TNE.saveManager().getTNEManager().getTNEProvider().topBalances(world, currency, pageLimit, page);
     } catch (SQLException e) {
       return new LinkedList<>();
     }
@@ -818,7 +821,7 @@ public class TNEAPI {
    * @return The value of the configuration.
    */
   public BigDecimal getBigDecimal(String configuration) {
-    return getBigDecimal(configuration, plugin.defaultWorld);
+    return getBigDecimal(configuration, TNECore.connector().defaultWorld());
   }
 
   /**
@@ -864,7 +867,7 @@ public class TNEAPI {
    * Configuration-related Methods.
    */
   public String getString(String configuration) {
-    return (String)getConfiguration(configuration, TNELib.instance().defaultWorld);
+    return (String)getConfiguration(configuration, TNECore.connector().defaultWorld());
   }
 
   public String getString(String configuration, String world) {
@@ -880,7 +883,7 @@ public class TNEAPI {
   }
 
   public Boolean getBoolean(String configuration) {
-    return Boolean.valueOf(getConfiguration(configuration, TNELib.instance().defaultWorld).toString());
+    return Boolean.valueOf(getConfiguration(configuration, TNECore.connector().defaultWorld()).toString());
   }
 
   public Boolean getBoolean(String configuration, String world) {
@@ -896,7 +899,7 @@ public class TNEAPI {
   }
 
   public Integer getInteger(String configuration) {
-    return Integer.valueOf(getConfiguration(configuration, TNELib.instance().defaultWorld).toString());
+    return Integer.valueOf(getConfiguration(configuration, TNECore.connector().defaultWorld()).toString());
   }
 
   public Integer getInteger(String configuration, String world) {
@@ -917,7 +920,7 @@ public class TNEAPI {
   }
 
   public Object getConfiguration(String configuration) {
-    return getConfiguration(configuration, TNELib.instance().defaultWorld);
+    return getConfiguration(configuration, TNECore.connector().defaultWorld());
   }
 
   public Object getConfiguration(String configuration, String world) {

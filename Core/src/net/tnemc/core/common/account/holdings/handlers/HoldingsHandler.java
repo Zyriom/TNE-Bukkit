@@ -1,4 +1,4 @@
-package net.tnemc.core.common.account.balance.handlers;
+package net.tnemc.core.common.account.holdings.handlers;
 
 import net.tnemc.core.common.account.Account;
 import net.tnemc.core.common.currency.Currency;

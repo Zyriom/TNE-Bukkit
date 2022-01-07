@@ -2,6 +2,7 @@ package net.tnemc.core.common.currency.loader;
 
 import net.tnemc.config.CommentedConfiguration;
 import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.CurrencyManager;
 import net.tnemc.core.common.currency.CurrencyLoader;
 import net.tnemc.core.common.currency.CurrencyNote;
@@ -12,6 +13,7 @@ import net.tnemc.core.common.currency.recipe.CurrencyLegacyShapedRecipe;
 import net.tnemc.core.common.currency.recipe.CurrencyRecipe;
 import net.tnemc.core.common.currency.recipe.CurrencyShapedRecipe;
 import net.tnemc.core.common.currency.recipe.CurrencyShapelessRecipe;
+import net.tnemc.core.common.utils.FileUtils;
 import net.tnemc.core.common.utils.MISCUtils;
 import net.tnemc.core.event.currency.TNECurrencyCraftingRecipeEvent;
 import net.tnemc.core.event.currency.TNECurrencyLoadEvent;
@@ -45,10 +47,10 @@ public class AdvancedCurrencyLoader implements CurrencyLoader {
 
   @Override
   public void loadCurrencies() {
-    final File directory = new File(TNE.instance().getDataFolder(), "currencies");
+    final File directory = new File(TNECore.directory(), "currencies");
 
     if(directory.exists()) {
-      final File[] currencies = MISCUtils.getYAMLs(directory);
+      final File[] currencies = FileUtils.getByEXT(directory, ".yml");
 
       for(File curFile : currencies) {
         CommentedConfiguration config = new CommentedConfiguration(curFile, (File) null);
