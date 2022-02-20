@@ -2,7 +2,7 @@ package net.tnemc.core.commands.money;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.TNEAccount;
@@ -47,11 +47,11 @@ public class MoneyBalanceCommand implements CommandExecution {
     Bukkit.getScheduler().runTaskAsynchronously(TNE.instance(), ()->{
       CommandSender sender = MISCUtils.getSender(provider);
 
-      TNE.debug("===START MoneyBalanceCommand  ===");
+      TNECore.log().debug("===START MoneyBalanceCommand  ===");
       String world = (arguments.length >= 1)? arguments[0] : WorldFinder.getWorld(sender, WorldVariant.BALANCE);
       if(TNE.instance().getWorldManager(world) == null) world = WorldFinder.getWorld(sender, WorldVariant.BALANCE);
       world = TNE.instance().getWorldManager(world).getBalanceWorld();
-      TNE.debug("MoneyBalanceCommand.execute, World: " + world);
+      TNECore.log().debug("MoneyBalanceCommand.execute, World: " + world);
 
       if (!TNE.instance().hasWorldManager(world)) {
         Message m = new Message("Messages.Money.NoWorld");
@@ -61,9 +61,9 @@ public class MoneyBalanceCommand implements CommandExecution {
       }
 
       final UUID id = IDFinder.getID(sender);
-      if(TNE.manager() == null) TNE.debug("Economy Manager is null");
-      if(TNE.manager().currencyManager() == null) TNE.debug("TNECurrency Manager is null");
-      if(TNE.manager().currencyManager().get(world) == null) TNE.debug("World TNECurrency is null");
+      if(TNE.manager() == null) TNECore.log().debug("Economy Manager is null");
+      if(TNE.manager().currencyManager() == null) TNECore.log().debug("TNECurrency Manager is null");
+      if(TNE.manager().currencyManager().get(world) == null) TNECore.log().debug("World TNECurrency is null");
       String currencyName = (arguments.length >= 2) ? arguments[1] : TNE.manager().currencyManager().get(world).name();
 
       if(sender instanceof Player) {
@@ -88,8 +88,8 @@ public class MoneyBalanceCommand implements CommandExecution {
       }*/
 
       final TNEAccount account = TNE.manager().getAccount(id);
-      TNE.debug("World: " + world);
-      TNE.debug("Args Length: " + arguments.length);
+      TNECore.log().debug("World: " + world);
+      TNECore.log().debug("Args Length: " + arguments.length);
 
       if(TNE.instance().getWorldManager(world).isEconomyDisabled()) {
         new Message("Messages.General.Disabled").translate(world, sender);
@@ -105,25 +105,25 @@ public class MoneyBalanceCommand implements CommandExecution {
         currencies.addAll(TNE.instance().getWorldManager(world).getCurrencies());
       }
 
-      TNE.debug("Currencies: " + currencies.size());
-      TNE.debug("Pre transactions of MoneyBalanceCommand");
+      TNECore.log().debug("Currencies: " + currencies.size());
+      TNECore.log().debug("Pre transactions of MoneyBalanceCommand");
       TransactionResult result = null;
 
       for(TNECurrency cur : currencies) {
         if(cur.getCurrencyType().offline() || MISCUtils.getPlayer(id) != null) {
-          TNE.debug("BalanceCommand Currency Loop.. Currency: " + cur.name());
+          TNECore.log().debug("BalanceCommand Currency Loop.. Currency: " + cur.name());
           TNETransaction transaction = new TNETransaction(account, account, world, TNE.transactionManager().getType("inquiry"));
           transaction.setRecipientCharge(new TransactionCharge(world, cur, BigDecimal.ZERO));
           transaction.setRecipientBalance(new CurrencyEntry(world, cur, account.getHoldings(world, cur)));
-          TNE.debug("BalanceCommand RecipientChargeCurrency: " + transaction.recipientCharge().getCurrency().name());
-          TNE.debug("BalanceCommand RecipientCharge: " + transaction.recipientCharge().getAmount().toPlainString());
+          TNECore.log().debug("BalanceCommand RecipientChargeCurrency: " + transaction.recipientCharge().getCurrency().name());
+          TNECore.log().debug("BalanceCommand RecipientCharge: " + transaction.recipientCharge().getAmount().toPlainString());
           result = TNE.transactionManager().perform(transaction);
           balances.put(cur.name(), transaction.recipientBalance().getAmount());
         }
       }
 
-      TNE.debug("Balances Size: " + balances.size());
-      TNE.debug("Post transactions of MoneyBalanceCommand");
+      TNECore.log().debug("Balances Size: " + balances.size());
+      TNECore.log().debug("Post transactions of MoneyBalanceCommand");
       if(balances.size() > 1) {
         final String w = world;
         Message message = new Message("Messages.Money.HoldingsMulti");
@@ -141,7 +141,7 @@ public class MoneyBalanceCommand implements CommandExecution {
           }
           m.translate(w, sender, id.toString());
         });
-        TNE.debug("===END MoneyBalanceCommand ===");
+        TNECore.log().debug("===END MoneyBalanceCommand ===");
         return;
       }
 
@@ -159,7 +159,7 @@ public class MoneyBalanceCommand implements CommandExecution {
         return;
       }
       MISCUtils.help(sender, label, arguments);
-      TNE.debug("===END MoneyBalanceCommand ===");
+      TNECore.log().debug("===END MoneyBalanceCommand ===");
     });
     return true;
   }

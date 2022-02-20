@@ -2,7 +2,7 @@ package net.tnemc.core.commands.money;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.WorldFinder;
@@ -34,7 +34,7 @@ public class MoneyOtherCommand implements CommandExecution {
   @Override
   public boolean execute(PlayerProvider provider, String label, String[] arguments) {
     CommandSender sender = MISCUtils.getSender(provider);
-    TNE.debug("===START MoneyOtherCommand  ===");
+    TNECore.log().debug("===START MoneyOtherCommand  ===");
 
     Bukkit.getScheduler().runTaskAsynchronously(TNE.instance(), ()-> {
       if (arguments.length >= 1 && arguments.length <= 3) {
@@ -70,11 +70,11 @@ public class MoneyOtherCommand implements CommandExecution {
         message.addVariable("$world", world);
         message.addVariable("$amount", CurrencyFormatter.format(TNE.manager().currencyManager().get(world, transaction.recipientBalance().getCurrency().name()), world, transaction.recipientBalance().getAmount(), transaction.recipient()));
         message.translate(world, IDFinder.getID(sender));
-        TNE.debug("===END MoneyOtherCommand  ===");
+        TNECore.log().debug("===END MoneyOtherCommand  ===");
         return;
       }
       MISCUtils.help(sender, label, arguments);
-      TNE.debug("===END MoneyOtherCommand  ===");
+      TNECore.log().debug("===END MoneyOtherCommand  ===");
     });
     return true;
   }

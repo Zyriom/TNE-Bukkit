@@ -1,6 +1,5 @@
 package net.tnemc.core.common;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.api.IDFinder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

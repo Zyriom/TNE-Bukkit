@@ -3,7 +3,7 @@ package net.tnemc.core.commands.module;
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.CommandsHandler;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.WorldFinder;
@@ -62,7 +62,7 @@ public class ModuleReloadCommand implements CommandExecution {
       module.getModule().enableSave(TNE.saveManager());
       module.getModule().listeners(TNE.instance()).forEach(listener->{
         Bukkit.getServer().getPluginManager().registerEvents(listener, TNE.instance());
-        TNE.debug("Registering Listener");
+        TNECore.log().debug("Registering Listener");
       });
 
       Message message = new Message("Messages.Module.Reloaded");

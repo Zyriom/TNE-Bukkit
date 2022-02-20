@@ -2,7 +2,7 @@ package net.tnemc.core.commands.admin;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.utils.MISCUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -43,19 +43,19 @@ public class AdminReportCommand implements CommandExecution {
 
     TNE.instance().getLogger().info("Logging report.");
     name = TNE.instance().getServerName() + "-" + year + "-" + month + "-" + day + "-" + minute + "-server.txt";
-    try (BufferedReader br = new BufferedReader(new FileReader(new File(TNE.instance().getDataFolder(),"../../logs/latest.log")))){
+    try (BufferedReader br = new BufferedReader(new FileReader(new File(TNECore.directory(),"../../logs/latest.log")))){
       String line;
       while ((line = br.readLine()) != null) {
         content.append(line + System.getProperty("line.separator"));
       }
     } catch (Exception e) {
-      TNE.debug(e);
+      TNECore.log().debug(e);
     }
     serverLog = MISCUtils.pastebinUpload(name, "yaml", content);
 
     content = new StringBuilder();
     name = TNE.instance().getServerName() + "-" + year + "-" + month + "-" + day + "-" + minute + "-config.txt";
-    try (BufferedReader br = new BufferedReader(new FileReader(new File(TNE.instance().getDataFolder(),"config.yml")))){
+    try (BufferedReader br = new BufferedReader(new FileReader(new File(TNECore.directory(),"config.yml")))){
       String line;
       while ((line = br.readLine()) != null) {
         if(line.toLowerCase().contains("mysql") || line.toLowerCase().contains("host") ||
@@ -64,12 +64,12 @@ public class AdminReportCommand implements CommandExecution {
         content.append(line + System.getProperty("line.separator"));
       }
     } catch (Exception e) {
-      TNE.debug(e);
+      TNECore.log().debug(e);
     }
     configLog = MISCUtils.pastebinUpload(name, "yaml", content);
 
-    TNE.debug("ConfigLog: " + configLog);
-    TNE.debug("serverLog: " + serverLog);
+    TNECore.log().debug("ConfigLog: " + configLog);
+    TNECore.log().debug("serverLog: " + serverLog);
 
     if(!configLog.contains("pastebin.com")) {
       sender.sendMessage(ChatColor.RED + "Something went wrong while preparing your report.");
@@ -91,7 +91,7 @@ public class AdminReportCommand implements CommandExecution {
     reportLog = MISCUtils.pastebinUpload(name, "yaml", content);
 
     succeeded = reportLog.contains("pastebin.com");
-    TNE.debug("reportLog: " + reportLog);
+    TNECore.log().debug("reportLog: " + reportLog);
 
     if(succeeded) {
       sender.sendMessage(ChatColor.WHITE + "Report URL: " + reportLog);

@@ -1,6 +1,5 @@
 package net.tnemc.core.menu;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.menu.icons.amountselection.ConfirmIcon;
 import net.tnemc.core.menu.impl.balance.BalanceMenu;
 import net.tnemc.core.menu.impl.balance.BalanceOptionsMenu;

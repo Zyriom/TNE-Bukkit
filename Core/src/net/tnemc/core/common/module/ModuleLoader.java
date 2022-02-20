@@ -1,6 +1,6 @@
 package net.tnemc.core.common.module;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -56,7 +56,7 @@ public class ModuleLoader {
   }
 
   public void load() {
-    File directory = new File(TNE.instance().getDataFolder(), "modules");
+    File directory = new File(TNECore.directory(), "modules");
 
     if(directory.exists()) {
 
@@ -140,7 +140,7 @@ public class ModuleLoader {
 
         Vector<Class> classes =  (Vector<Class>) f.get(TNE.loader().getModule(moduleName).getLoader());
         for(Class clazz : classes) {
-          TNE.debug("Loaded: " + clazz.getName());
+          TNECore.log().debug("Loaded: " + clazz.getName());
         }
       } catch (Exception e) {
         e.printStackTrace();
@@ -157,7 +157,7 @@ public class ModuleLoader {
   }
 
   protected String findPath(String moduleName) {
-    File directory = new File(TNE.instance().getDataFolder(), "modules");
+    File directory = new File(TNECore.directory(), "modules");
     File[] jars = directory.listFiles((dir, name) -> name.endsWith(".jar"));
 
     if(jars != null) {
@@ -203,10 +203,10 @@ public class ModuleLoader {
           String fileName = fileURL.substring(fileURL.lastIndexOf("/") + 1, fileURL.length());
 
           InputStream in = httpConn.getInputStream();
-          File file = new File(TNE.instance().getDataFolder() + File.separator + "modules", fileName);
+          File file = new File(TNECore.directory() + File.separator + "modules", fileName);
 
           if(file.exists()) {
-            if(!file.renameTo(new File(TNE.instance().getDataFolder() + File.separator + "modules", "outdated-" + fileName))) {
+            if(!file.renameTo(new File(TNECore.directory() + File.separator + "modules", "outdated-" + fileName))) {
               return false;
             }
           }
@@ -250,13 +250,13 @@ public class ModuleLoader {
 
       main = reader.readLine().split("=")[1].trim();
     } catch (IOException e) {
-      TNE.debug(e);
+      TNECore.log().debug(e);
     } finally {
       if(jar != null) {
         try {
           jar.close();
         } catch(IOException e) {
-          TNE.debug(e);
+          TNECore.log().debug(e);
         }
       }
 
@@ -264,7 +264,7 @@ public class ModuleLoader {
         try {
           in.close();
         } catch(IOException e) {
-          TNE.debug(e);
+          TNECore.log().debug(e);
         }
       }
 
@@ -272,7 +272,7 @@ public class ModuleLoader {
         try {
           reader.close();
         } catch(IOException e) {
-          TNE.debug(e);
+          TNECore.log().debug(e);
         }
       }
     }

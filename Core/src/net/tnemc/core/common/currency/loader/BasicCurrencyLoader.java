@@ -1,6 +1,6 @@
 package net.tnemc.core.common.currency.loader;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.currency.CurrencyLoader;
 import net.tnemc.core.common.currency.CurrencyNote;
 import net.tnemc.core.common.currency.ItemTier;
@@ -37,7 +37,7 @@ public class BasicCurrencyLoader implements CurrencyLoader {
     final String pluralMinor = TNE.instance().mainConfigurations().getString(base + ".Minor_Plural", "Cents");
     final String prefixes = TNE.instance().mainConfigurations().getString(base + ".Prefixes", "kMGTPEZYXWVUN₮").trim();
     final String symbol = TNE.instance().mainConfigurations().getString(base + ".Symbol", "$");
-    TNE.debug("Basic Symbol: " + symbol);
+    TNECore.log().debug("Basic Symbol: " + symbol);
     final String currencyType = TNE.instance().mainConfigurations().getString(base + ".Type", "virtual");
 
     //Currency Options Configurations.
@@ -72,9 +72,9 @@ public class BasicCurrencyLoader implements CurrencyLoader {
       currencyNote.setFlags(TNE.instance().mainConfigurations().getStringList(base + ".Note.Item.Flags"));
     }
 
-    TNE.debug("Symbol: " + symbol);
-    TNE.debug("Symbol: " + TNE.instance().mainConfigurations().getString(base + ".Symbol", "$"));
-    TNE.debug("identifier: " + identifier);
+    TNECore.log().debug("Symbol: " + symbol);
+    TNECore.log().debug("Symbol: " + TNE.instance().mainConfigurations().getString(base + ".Symbol", "$"));
+    TNECore.log().debug("identifier: " + identifier);
 
     TNECurrency currency = new TNECurrency();
     currency.setNote(currencyNote);
@@ -100,7 +100,7 @@ public class BasicCurrencyLoader implements CurrencyLoader {
     currency.setSeparateMajor(separate);
     currency.setMajorSeparator(separator);
     currency.setMinorWeight(minorWeight);
-    TNE.debug("Symbol: " + currency.symbol());
+    TNECore.log().debug("Symbol: " + currency.symbol());
 
     if(loadTiers(currency)) {
       TNE.manager().currencyManager().addCurrency(TNE.instance().defaultWorld, currency);

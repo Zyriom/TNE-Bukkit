@@ -1,6 +1,6 @@
 package net.tnemc.core.worker;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import org.bukkit.Bukkit;
 
 /**
@@ -28,7 +28,7 @@ public class SaveWorker implements Runnable {
       try {
         plugin.getSaveManager().save();
       } catch(Exception ignore) {
-        TNE.logger().warning("Issue occurred while attempting to save to database.");
+        TNECore.log().warning("Issue occurred while attempting to save to database.");
       }
     });
     try {

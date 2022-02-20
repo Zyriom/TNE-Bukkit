@@ -1,7 +1,7 @@
 package net.tnemc.core.common.configurations;
 
 import net.tnemc.config.CommentedConfiguration;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.WorldManager;
 
 import java.io.File;
@@ -45,12 +45,12 @@ public class WorldConfigurations extends Configuration {
   @Override
   public void load(CommentedConfiguration configurationFile) {
 
-    TNE.debug("Loading world configurations");
+    TNECore.log().debug("Loading world configurations");
 
     Set<String> worlds = configurationFile.getSection("Worlds").getKeys(false);
 
     for(String world : worlds) {
-      TNE.debug("Iteration for World: " + world);
+      TNECore.log().debug("Iteration for World: " + world);
       WorldManager manager = TNE.instance().getWorldManager(world);
 
       if(balanceShare.containsKey(world)) {
@@ -62,7 +62,7 @@ public class WorldConfigurations extends Configuration {
       }
 
       if(manager == null) {
-        TNE.debug("World manager = null");
+        TNECore.log().debug("World manager = null");
         continue;
       }
 
@@ -84,24 +84,24 @@ public class WorldConfigurations extends Configuration {
 
       List<String> balances = new ArrayList<>();
 
-      TNE.debug("Worlds." + world + ".Share.Balances");
+      TNECore.log().debug("Worlds." + world + ".Share.Balances");
 
       if(configurationFile.contains("Worlds." + world + ".Share.Balances")) {
         balances = configurationFile.getStringList("Worlds." + world + ".Share.Balances");
-        TNE.debug(world + " shared balanced: " + balances);
+        TNECore.log().debug(world + " shared balanced: " + balances);
       }
-      TNE.debug("Balance Share Size: " + balances.size());
-      TNE.debug("Balance Share: " + String.join(", ", balances));
+      TNECore.log().debug("Balance Share Size: " + balances.size());
+      TNECore.log().debug("Balance Share: " + String.join(", ", balances));
 
       if(balances.size() > 0) {
         balances.forEach((sharedWorld)->{
-          TNE.debug("Looping " + world + "->" + sharedWorld);
+          TNECore.log().debug("Looping " + world + "->" + sharedWorld);
           balanceShare.put(sharedWorld, world);
 
-          TNE.debug("Has Manager for " + sharedWorld + "? " + TNE.instance().hasWorldManager(sharedWorld));
+          TNECore.log().debug("Has Manager for " + sharedWorld + "? " + TNE.instance().hasWorldManager(sharedWorld));
           if(TNE.instance().hasWorldManager(sharedWorld)) {
             TNE.instance().getWorldManager(sharedWorld).setBalanceWorld(world);
-            TNE.debug(sharedWorld + " setting balance share to " + world);
+            TNECore.log().debug(sharedWorld + " setting balance share to " + world);
           }
         });
       }

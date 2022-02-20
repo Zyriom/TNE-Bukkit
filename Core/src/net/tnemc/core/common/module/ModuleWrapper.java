@@ -1,7 +1,5 @@
 package net.tnemc.core.common.module;
 
-import net.tnemc.core.TNE;
-
 import java.io.IOException;
 import java.net.URLClassLoader;
 

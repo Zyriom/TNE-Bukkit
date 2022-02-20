@@ -1,6 +1,5 @@
 package net.tnemc.core.menu.icons.main;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.menu.icons.Icon;
 
 /**

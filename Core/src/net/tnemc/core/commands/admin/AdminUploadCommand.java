@@ -2,7 +2,7 @@ package net.tnemc.core.commands.admin;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.utils.MISCUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -38,25 +38,25 @@ public class AdminUploadCommand implements CommandExecution {
     String name = "";
 
     name = TNE.instance().getServerName() + "-" + year + "-" + month + "-" + day + "-server.txt";
-    try (BufferedReader br = new BufferedReader(new FileReader(new File(TNE.instance().getDataFolder(),"../../logs/latest.log")))){
+    try (BufferedReader br = new BufferedReader(new FileReader(new File(TNECore.directory(),"../../logs/latest.log")))){
       String line;
       while ((line = br.readLine()) != null) {
         content.append(line + System.getProperty("line.separator"));
       }
     } catch (Exception e) {
-      TNE.debug(e);
+      TNECore.log().debug(e);
     }
     serverLog = MISCUtils.pastebinUpload(name, "yaml", content);
 
     content = new StringBuilder();
     name = TNE.instance().getServerName() + "-" + year + "-" + month + "-" + day + "-debug.txt";
-    try (BufferedReader br = new BufferedReader(new FileReader(new File(TNE.instance().getDataFolder(), "debug/debug-" + year + "-" + month + "-" + day + ".txt")))){
+    try (BufferedReader br = new BufferedReader(new FileReader(new File(TNECore.directory(), "debug/debug-" + year + "-" + month + "-" + day + ".txt")))){
       String line;
       while ((line = br.readLine()) != null) {
         content.append(line + System.getProperty("line.separator"));
       }
     } catch (Exception e) {
-      TNE.debug(e);
+      TNECore.log().debug(e);
     }
     debugLog = MISCUtils.pastebinUpload(name, "yaml", content);
 

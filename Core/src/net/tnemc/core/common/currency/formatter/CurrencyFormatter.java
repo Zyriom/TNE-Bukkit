@@ -1,6 +1,5 @@
 package net.tnemc.core.common.currency.formatter;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.currency.Currency;
 import net.tnemc.core.common.currency.formatter.impl.ColourRule;
 import net.tnemc.core.common.currency.formatter.impl.DecimalRule;
@@ -58,7 +57,7 @@ public class CurrencyFormatter {
   }
 
   public static String format(Currency currency, BigDecimal amount, Location location, String player) {
-    //TNE.debug("Format: " + currency.getFormat());
+    //TNECore.log().debug("Format: " + currency.getFormat());
     amount = amount.setScale(currency.decimalPlaces(), BigDecimal.ROUND_CEILING);
 
     String format = currency.getFormat();

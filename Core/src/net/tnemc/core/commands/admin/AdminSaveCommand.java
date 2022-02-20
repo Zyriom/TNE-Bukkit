@@ -2,7 +2,7 @@ package net.tnemc.core.commands.admin;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.utils.MISCUtils;
 import org.bukkit.command.CommandSender;
 
@@ -24,7 +24,7 @@ public class AdminSaveCommand implements CommandExecution {
     try {
       TNE.saveManager().save();
     } catch (SQLException e) {
-      TNE.debug(e);
+      TNECore.log().debug(e);
     }
     sender.sendMessage("Successfully saved all TNE Data!");
     return true;

@@ -1,6 +1,5 @@
 package net.tnemc.core.menu.impl.shared;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.api.IDFinder;
 import net.tnemc.core.menu.Menu;
 import net.tnemc.core.menu.consumables.IconClick;

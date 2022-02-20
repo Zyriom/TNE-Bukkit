@@ -4,7 +4,7 @@ import com.github.tnerevival.core.db.SQLDatabase;
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.CommandsHandler;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.WorldFinder;
@@ -60,7 +60,7 @@ public class ModuleLoadCommand implements CommandExecution {
 
       module.getModule().listeners(TNE.instance()).forEach(listener->{
         Bukkit.getServer().getPluginManager().registerEvents(listener, TNE.instance());
-        TNE.debug("Registering Listener");
+        TNECore.log().debug("Registering Listener");
       });
       final String tablesFile = module.getModule().tablesFile();
 

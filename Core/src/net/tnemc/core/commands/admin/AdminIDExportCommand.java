@@ -2,7 +2,7 @@ package net.tnemc.core.commands.admin;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.utils.MISCUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -26,7 +26,7 @@ public class AdminIDExportCommand implements CommandExecution {
       try {
         MISCUtils.idExtract(sender);
       } catch (SQLException e) {
-        TNE.debug(e);
+        TNECore.log().debug(e);
       }
     });
     return true;

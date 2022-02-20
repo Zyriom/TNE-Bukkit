@@ -1,6 +1,6 @@
 package net.tnemc.core.menu.icons.amountselection;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.api.IDFinder;
 import net.tnemc.core.menu.icons.Icon;
 import org.bukkit.Material;
@@ -43,7 +43,7 @@ public class AddIcon extends Icon {
 
   @Override
   public void onClick(String menu, Player player, ClickType type) {
-    TNE.debug("=====START AddIcon.onClick =====");
+    TNECore.log().debug("=====START AddIcon.onClick =====");
     UUID id = IDFinder.getID(player);
     BigDecimal current = (TNE.menuManager().getViewerData(id, "action_amount") != null)?
         (BigDecimal)TNE.menuManager().getViewerData(id, "action_amount") :
@@ -51,7 +51,7 @@ public class AddIcon extends Icon {
 
     current = current.add(amount);
     TNE.menuManager().setViewerData(id, "action_amount", current);
-    TNE.debug("=====END AddIcon.onClick =====");
+    TNECore.log().debug("=====END AddIcon.onClick =====");
     super.onClick(menu, player, type);
   }
 }

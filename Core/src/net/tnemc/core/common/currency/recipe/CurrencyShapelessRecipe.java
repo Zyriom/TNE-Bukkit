@@ -1,6 +1,6 @@
 package net.tnemc.core.common.currency.recipe;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.currency.TNECurrency;
 import net.tnemc.core.common.material.MaterialHelper;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +45,7 @@ public class CurrencyShapelessRecipe extends CurrencyRecipe {
         final int count = materials.getOrDefault(split[0].charAt(0), 1);
         if (split[1].equalsIgnoreCase("currency")) {
           if(split.length < 5) {
-            TNE.logger().warning("Skipping currency crafting material: " + material + " invalid currency ingredient.");
+            TNECore.log().warning("Skipping currency crafting material: " + material + " invalid currency ingredient.");
             continue;
           }
           final String world = split[2];
@@ -53,14 +53,14 @@ public class CurrencyShapelessRecipe extends CurrencyRecipe {
           final String tier = split[4];
 
           if(!TNE.manager().currencyManager().contains(world, currency)) {
-            TNE.logger().warning("Skipping currency crafting material: " + material + " invalid currency ingredient.");
+            TNECore.log().warning("Skipping currency crafting material: " + material + " invalid currency ingredient.");
             continue;
           }
 
           TNECurrency currencyObject = TNE.manager().currencyManager().get(world, currency);
 
           if(!currencyObject.hasTier(tier) || !currencyObject.isItem()) {
-            TNE.logger().warning("Skipping currency crafting material: " + material + " invalid currency ingredient.");
+            TNECore.log().warning("Skipping currency crafting material: " + material + " invalid currency ingredient.");
             continue;
           }
 

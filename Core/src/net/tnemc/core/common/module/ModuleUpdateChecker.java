@@ -1,6 +1,6 @@
 package net.tnemc.core.common.module;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -113,10 +113,10 @@ public class ModuleUpdateChecker {
         String fileName = jarURL.substring(jarURL.lastIndexOf("/") + 1);
 
         InputStream in = connection.getInputStream();
-        File file = new File(TNE.instance().getDataFolder() + File.separator + "modules", fileName);
+        File file = new File(TNECore.directory() + File.separator + "modules", fileName);
 
         if(file.exists()) {
-          if(!file.renameTo(new File(TNE.instance().getDataFolder() + File.separator + "modules", "outdated-" + fileName))) {
+          if(!file.renameTo(new File(TNECore.directory() + File.separator + "modules", "outdated-" + fileName))) {
             return false;
           }
         }

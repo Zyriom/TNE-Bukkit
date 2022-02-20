@@ -1,6 +1,5 @@
 package net.tnemc.core.common.currency.recipe;
 
-import net.tnemc.core.TNE;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;

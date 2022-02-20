@@ -1,7 +1,6 @@
 package net.tnemc.core.common.configurations;
 
 import net.tnemc.config.CommentedConfiguration;
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.configurations.player.PlayerValues;
 
 import java.io.File;

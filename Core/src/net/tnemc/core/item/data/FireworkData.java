@@ -1,6 +1,6 @@
 package net.tnemc.core.item.data;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.item.JSONHelper;
 import net.tnemc.core.item.SerialItemData;
 import org.bukkit.Color;
@@ -93,7 +93,7 @@ public class FireworkData implements SerialItemData {
   @Override
   public void readJSON(JSONHelper json) {
     valid = true;
-    TNE.debug("FireWork Start");
+    TNECore.log().debug("FireWork Start");
     power = json.getInteger("power");
     if(json.has("effects")) {
       JSONHelper effectsObj = json.getHelper("effects");
@@ -103,25 +103,25 @@ public class FireworkData implements SerialItemData {
         JSONHelper effect = new JSONHelper((JSONObject)value);
 
         List<Color> colours = new ArrayList<>();
-        TNE.debug("colours");
+        TNECore.log().debug("colours");
         if(effect.has("colours")) {
           JSONObject coloursObj = effect.getJSON("colours");
-          TNE.debug("Colours?: " + (coloursObj == null));
-          TNE.debug("Colours: " + coloursObj.toJSONString());
+          TNECore.log().debug("Colours?: " + (coloursObj == null));
+          TNECore.log().debug("Colours: " + coloursObj.toJSONString());
           coloursObj.forEach((ignore, colour)-> colours.add(Color.fromRGB(Integer.valueOf(String.valueOf(colour)))));
         }
 
         List<Color> fadeColours = new ArrayList<>();
-        TNE.debug("fades");
+        TNECore.log().debug("fades");
         if(effect.has("fades")) {
           JSONObject fades = effect.getJSON("fades");
           fades.forEach((ignore, fade)-> fadeColours.add(Color.fromRGB(Integer.valueOf(String.valueOf(fade)))));
         }
         effects.add(FireworkEffect.builder().withFade(fadeColours).withColor(colours).flicker(effect.getBoolean("flicker"))
                     .trail(effect.getBoolean("trail")).with(FireworkEffect.Type.valueOf(effect.getString("type"))).build());
-        TNE.debug("Effects End");
+        TNECore.log().debug("Effects End");
       });
-      TNE.debug("FireWork End");
+      TNECore.log().debug("FireWork End");
     }
   }
 }

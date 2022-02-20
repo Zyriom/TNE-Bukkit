@@ -2,7 +2,7 @@ package net.tnemc.core.commands.admin;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.api.IDFinder;
 import net.tnemc.core.common.utils.MISCUtils;
 import org.bukkit.ChatColor;
@@ -25,7 +25,7 @@ public class AdminPlayerCommand implements CommandExecution {
   @Override
   public boolean execute(PlayerProvider provider, String label, String[] arguments) {
     CommandSender sender = MISCUtils.getSender(provider);
-    TNE.debug("===START AdminBalanceCommand  ===");
+    TNECore.log().debug("===START AdminBalanceCommand  ===");
     if(arguments.length >= 1 && arguments.length <= 3) {
 
       UUID id = IDFinder.getID(arguments[0]);
@@ -34,7 +34,7 @@ public class AdminPlayerCommand implements CommandExecution {
       sender.sendMessage(ChatColor.WHITE + arguments[0] + " is" + not + " a player.");
     }
     MISCUtils.help(sender, label, arguments);
-    TNE.debug("===END AdminBalanceCommand  ===");
+    TNECore.log().debug("===END AdminBalanceCommand  ===");
     return false;
   }
 }

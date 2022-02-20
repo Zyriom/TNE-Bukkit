@@ -5,7 +5,7 @@ import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.CommandInformation;
 import net.tnemc.commands.core.TabCompleter;
 import net.tnemc.config.CommentedConfiguration;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.configurations.Configuration;
 import net.tnemc.core.common.data.TNEDataProvider;
 import net.tnemc.core.common.transaction.result.TransactionResult;
@@ -151,14 +151,14 @@ public interface Module {
   }
 
   default CommentedConfiguration initializeConfiguration(File file, String defaultFile) {
-    TNE.debug("Started copying " + file.getName());
+    TNECore.log().debug("Started copying " + file.getName());
     CommentedConfiguration commentedConfiguration = new CommentedConfiguration(file, new InputStreamReader(getResource(defaultFile), StandardCharsets.UTF_8), false);
-    TNE.debug("Initializing commented configuration");
+    TNECore.log().debug("Initializing commented configuration");
     if(commentedConfiguration != null) {
-      TNE.debug("Loading commented configuration");
+      TNECore.log().debug("Loading commented configuration");
       commentedConfiguration.load();
     }
-    TNE.debug("Finished copying " + file.getName());
+    TNECore.log().debug("Finished copying " + file.getName());
     return commentedConfiguration;
   }
 

@@ -2,7 +2,6 @@ package net.tnemc.core.commands.module;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.module.cache.ModuleFile;
 import net.tnemc.core.common.utils.MISCUtils;

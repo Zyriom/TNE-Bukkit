@@ -1,6 +1,6 @@
 package net.tnemc.core.menu;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.menu.consumables.MenuBuild;
 import net.tnemc.core.menu.consumables.MenuClick;
 import net.tnemc.core.menu.icons.Icon;
@@ -51,8 +51,8 @@ public class Menu {
     }
 
     icons.values().forEach(icon->{
-      TNE.debug("Icon Permission Node is: " + icon.getNode());
-      TNE.debug("Player Has? " + player.hasPermission(icon.getNode()));
+      TNECore.log().debug("Icon Permission Node is: " + icon.getNode());
+      TNECore.log().debug("Player Has? " + player.hasPermission(icon.getNode()));
       if(!icon.getNode().equalsIgnoreCase("") && player.hasPermission(icon.getNode())
          || icon.getNode().equalsIgnoreCase("")) {
         inventory.setItem(icon.getSlot(), icon.buildStack(player));

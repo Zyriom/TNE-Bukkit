@@ -2,7 +2,7 @@ package net.tnemc.core.commands.money;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.WorldFinder;
@@ -55,18 +55,18 @@ public class MoneyTopCommand implements CommandExecution {
       try {
         max = TNE.saveManager().getTNEManager().getTNEProvider().balanceCount(world, currency.name(), limit);
       } catch (SQLException e) {
-        TNE.debug(e);
+        TNECore.log().debug(e);
       }
       if(max == 0) max = 1;
 
       if(page > max) page = max;
-      TNE.debug("MoneyTopCommand.java(87): Max Pages - " + max);
+      TNECore.log().debug("MoneyTopCommand.java(87): Max Pages - " + max);
 
       LinkedList<TopBalance> values = new LinkedList<>();
       try {
         values = TNE.saveManager().getTNEManager().getTNEProvider().topBalances(world, currency.name(), limit, page);
       } catch (SQLException e) {
-        TNE.debug(e);
+        TNECore.log().debug(e);
       }
 
       LinkedList<String[]> message = new LinkedList<>();

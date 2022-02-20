@@ -1,6 +1,5 @@
 package net.tnemc.core.common.module.cache;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.module.ModuleUpdateChecker;
 import org.bukkit.Bukkit;
 import org.w3c.dom.Document;

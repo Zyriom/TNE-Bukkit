@@ -1,6 +1,6 @@
 package net.tnemc.core.item.data;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.item.JSONHelper;
 import net.tnemc.core.item.SerialItemData;
 import org.bukkit.Color;
@@ -74,7 +74,7 @@ public class FireworkEffectData implements SerialItemData {
       JSONObject colours = new JSONObject();
       for (int i = 0; i < colors.size(); i++) {
         colours.put(i, colors.get(i).asRGB());
-        TNE.debug("Color: " + colors.get(i).asRGB());
+        TNECore.log().debug("Color: " + colors.get(i).asRGB());
       }
       json.put("colours", colours);
     }
@@ -84,7 +84,7 @@ public class FireworkEffectData implements SerialItemData {
       JSONObject fades = new JSONObject();
       for (int i = 0; i < fadeColors.size(); i++) {
         fades.put(i, fadeColors.get(i).asRGB());
-        TNE.debug("Fade: " + fadeColors.get(i).asRGB());
+        TNECore.log().debug("Fade: " + fadeColors.get(i).asRGB());
       }
       json.put("fades", fades);
     }

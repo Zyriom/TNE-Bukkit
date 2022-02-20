@@ -2,7 +2,7 @@ package net.tnemc.core.commands.transaction;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.WorldFinder;
@@ -37,7 +37,7 @@ public class TransactionVoidCommand implements CommandExecution {
       try {
         uuid = UUID.fromString(arguments[0]);
       } catch(IllegalArgumentException exception) {
-        TNE.debug(exception);
+        TNECore.log().debug(exception);
       }
       if(uuid == null || !TNE.transactionManager().isValid(uuid)) {
         Message message = new Message("Messages.Transaction.Invalid");

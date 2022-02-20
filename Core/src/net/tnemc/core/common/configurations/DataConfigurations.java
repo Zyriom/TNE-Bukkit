@@ -1,7 +1,7 @@
 package net.tnemc.core.common.configurations;
 
 import net.tnemc.config.CommentedConfiguration;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class DataConfigurations extends Configuration {
 
   @Override
   public File getFile() {
-    return new File(TNE.instance().getDataFolder(), "data.yml");
+    return new File(TNECore.directory(), "data.yml");
   }
 
   @Override

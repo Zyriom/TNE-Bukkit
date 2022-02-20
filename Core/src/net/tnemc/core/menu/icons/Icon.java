@@ -1,6 +1,5 @@
 package net.tnemc.core.menu.icons;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.api.IDFinder;
 import net.tnemc.core.menu.ResponseData;

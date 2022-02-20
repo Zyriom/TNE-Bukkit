@@ -1,6 +1,5 @@
 package net.tnemc.core.menu.icons.amountselection;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.api.IDFinder;
 import net.tnemc.core.menu.icons.Icon;
 import org.bukkit.entity.Player;

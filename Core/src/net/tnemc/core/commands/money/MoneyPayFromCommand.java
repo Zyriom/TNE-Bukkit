@@ -2,7 +2,7 @@ package net.tnemc.core.commands.money;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.WorldFinder;
@@ -36,7 +36,7 @@ public class MoneyPayFromCommand implements CommandExecution {
       return false;
     }
     Bukkit.getScheduler().runTaskAsynchronously(TNE.instance(), ()->{
-      TNE.debug("===START MoneyPayCommand ===");
+      TNECore.log().debug("===START MoneyPayCommand ===");
       String world = WorldFinder.getWorld(sender, WorldVariant.BALANCE);
 
       if(TNE.instance().getWorldManager(world).isEconomyDisabled()) {
@@ -94,7 +94,7 @@ public class MoneyPayFromCommand implements CommandExecution {
           msg.addVariable("$world", world);
           msg.addVariable("$player", MISCUtils.getPlayer(sender).getDisplayName());
           msg.translate(world, sender);
-          TNE.debug("===END MoneyPayCommand ===");
+          TNECore.log().debug("===END MoneyPayCommand ===");
           return;
         }
 
@@ -113,11 +113,11 @@ public class MoneyPayFromCommand implements CommandExecution {
             "pay", value, currency, world,
             TNE.manager().getAccount(IDFinder.getID(arguments[0])), TNE.manager().getAccount(IDFinder.getID(sender)));
         handler.handle(true);
-        TNE.debug("===END MoneyPayCommand ===");
+        TNECore.log().debug("===END MoneyPayCommand ===");
         return;
       }
       MISCUtils.help(sender, label, arguments);
-      TNE.debug("===END MoneyPayCommand ===");
+      TNECore.log().debug("===END MoneyPayCommand ===");
     });
     return true;
   }

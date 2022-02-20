@@ -1,6 +1,6 @@
 package net.tnemc.core.item.data;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.item.JSONHelper;
 import net.tnemc.core.item.SerialItemData;
 import org.bukkit.Color;
@@ -78,8 +78,8 @@ public class TropicalFishBucketData implements SerialItemData {
   @Override
   public void readJSON(JSONHelper json) {
     valid = true;
-    TNE.debug("READING FISH BUCKET DATA");
-    TNE.debug("JSON: " + json.getObject().toJSONString());
+    TNECore.log().debug("READING FISH BUCKET DATA");
+    TNECore.log().debug("JSON: " + json.getObject().toJSONString());
     if(json.has("variant")) {
       this.variant = json.getBoolean("variant");
 

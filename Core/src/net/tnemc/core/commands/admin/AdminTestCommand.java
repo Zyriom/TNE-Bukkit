@@ -2,7 +2,7 @@ package net.tnemc.core.commands.admin;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.api.IDFinder;
 import net.tnemc.core.common.utils.MISCUtils;
 import org.bukkit.Bukkit;
@@ -78,7 +78,7 @@ public class AdminTestCommand implements CommandExecution {
         if(!isOp) player.setOp(true);
         MISCUtils.commandTest(player);
       } catch(Exception e) {
-        TNE.debug(e.getStackTrace());
+        TNECore.log().debug(e.getStackTrace());
       } finally {
         if(!isOp) player.setOp(false);
       }

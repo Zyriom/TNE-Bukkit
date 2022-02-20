@@ -1,6 +1,6 @@
 package net.tnemc.core.item.data;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.item.JSONHelper;
 import net.tnemc.core.item.SerialItem;
 import net.tnemc.core.item.SerialItemData;
@@ -31,28 +31,28 @@ public class ShulkerData implements SerialItemData {
 
   @Override
   public SerialItemData initialize(ItemStack stack) {
-    TNE.debug("ShulkerData.initialize.");
+    TNECore.log().debug("ShulkerData.initialize.");
     if(SerialItem.isShulker(stack.getType())) {
-      TNE.debug("Passed shulker check");
+      TNECore.log().debug("Passed shulker check");
       ItemMeta meta = stack.getItemMeta();
       if(meta instanceof BlockStateMeta) {
-        TNE.debug("Is BlockStateMeta");
+        TNECore.log().debug("Is BlockStateMeta");
         BlockStateMeta state = (BlockStateMeta)meta;
         if(state.getBlockState() instanceof ShulkerBox) {
-          TNE.debug("Is ShulkerBox BlockState");
+          TNECore.log().debug("Is ShulkerBox BlockState");
           valid = true;
           ShulkerBox shulker = (ShulkerBox)state.getBlockState();
           Inventory inventory = shulker.getInventory();
-          TNE.debug("Initializing shulker box..");
+          TNECore.log().debug("Initializing shulker box..");
           for(int i = 0; i < inventory.getSize(); i++) {
             if(inventory.getItem(i) == null || inventory.getItem(i).getType().equals(Material.AIR)) {
               if(items.containsKey(i)) {
                 items.remove(i);
-                TNE.debug("Removing item from slot " + i);
+                TNECore.log().debug("Removing item from slot " + i);
               }
             } else {
-              TNE.debug("Adding Item: " + inventory.getItem(i).getType().name());
-              TNE.debug("Item Slot: " + i);
+              TNECore.log().debug("Adding Item: " + inventory.getItem(i).getType().name());
+              TNECore.log().debug("Item Slot: " + i);
               items.put(i, new SerialItem(inventory.getItem(i)));
             }
           }
@@ -65,17 +65,17 @@ public class ShulkerData implements SerialItemData {
   @Override
   public ItemStack build(ItemStack stack) {
     if(valid) {
-      TNE.debug("Building shulker");
+      TNECore.log().debug("Building shulker");
       BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
-      TNE.debug("Building shulker");
+      TNECore.log().debug("Building shulker");
       ShulkerBox shulkerBox = (ShulkerBox)meta.getBlockState();
-      TNE.debug("Building shulker");
+      TNECore.log().debug("Building shulker");
       items.forEach((slot, item)->shulkerBox.getInventory().setItem(slot, item.getStack()));
-      TNE.debug("Building shulker");
+      TNECore.log().debug("Building shulker");
       meta.setBlockState(shulkerBox);
-      TNE.debug("Building shulker");
+      TNECore.log().debug("Building shulker");
       stack.setItemMeta(meta);
-      TNE.debug("Built shulker");
+      TNECore.log().debug("Built shulker");
     }
     return stack;
   }
@@ -86,8 +86,8 @@ public class ShulkerData implements SerialItemData {
     json.put("name", "shulker");
     JSONObject itemsObj = new JSONObject();
     items.forEach((slot, item)->{
-      TNE.debug("Item Null?: " + (item == null));
-      TNE.debug("Item Type: " + item.getMaterial().name());
+      TNECore.log().debug("Item Null?: " + (item == null));
+      TNECore.log().debug("Item Type: " + item.getMaterial().name());
       itemsObj.put(slot, item.toJSON());
     });
     json.put("items", itemsObj);
@@ -97,16 +97,16 @@ public class ShulkerData implements SerialItemData {
   @Override
   public void readJSON(JSONHelper json) {
     valid = true;
-    TNE.debug("Shulker Data Start");
+    TNECore.log().debug("Shulker Data Start");
     json.getJSON("items").forEach((key, value)->{
-      TNE.debug("Slot: " + String.valueOf(key));
-      TNE.debug("Item Data: " + ((JSONObject)value).toJSONString());
+      TNECore.log().debug("Slot: " + String.valueOf(key));
+      TNECore.log().debug("Item Data: " + ((JSONObject)value).toJSONString());
       final int slot = Integer.valueOf(String.valueOf(key));
-      TNE.debug("Amount: " + slot);
+      TNECore.log().debug("Amount: " + slot);
       items.put(slot, SerialItem.fromJSON((JSONObject)value));
-      TNE.debug("Item Size: " + items.size());
+      TNECore.log().debug("Item Size: " + items.size());
     });
-    TNE.debug("Shulker Data END");
+    TNECore.log().debug("Shulker Data END");
   }
 
   public Map<Integer, SerialItem> getItems() {

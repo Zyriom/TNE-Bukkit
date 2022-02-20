@@ -2,7 +2,6 @@ package net.tnemc.core.common.utils;
 
 import net.tnemc.commands.core.provider.PlayerProvider;
 import net.tnemc.commands.core.utils.CommandTranslator;
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

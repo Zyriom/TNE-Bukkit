@@ -2,7 +2,7 @@ package net.tnemc.core.commands.admin;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.WorldFinder;
@@ -33,7 +33,7 @@ public class AdminBalanceCommand implements CommandExecution {
   public boolean execute(PlayerProvider provider, String label, String[] arguments) {
     Bukkit.getScheduler().runTaskAsynchronously(TNE.instance(), ()->{
       CommandSender sender = MISCUtils.getSender(provider);
-      TNE.debug("===START AdminBalanceCommand  ===");
+      TNECore.log().debug("===START AdminBalanceCommand  ===");
       if (arguments.length >= 1 && arguments.length <= 3) {
 
         UUID id = IDFinder.getID(arguments[0]);
@@ -49,13 +49,13 @@ public class AdminBalanceCommand implements CommandExecution {
           new Message("Messages.General.Disabled").translate(world, sender);
           return;
         }
-        TNE.debug("Pre Transaction");
+        TNECore.log().debug("Pre Transaction");
 
         TNETransaction transaction = new TNETransaction(TNE.manager().getAccount(IDFinder.getID(sender)), TNE.manager().getAccount(id), world, TNE.transactionManager().getType("inquiry"));
         transaction.setRecipientCharge(new TransactionCharge(world, currency, BigDecimal.ZERO));
-        TNE.debug("pre perform");
+        TNECore.log().debug("pre perform");
         TransactionResult result = transaction.perform();
-        TNE.debug("post perform");
+        TNECore.log().debug("post perform");
         Message message = new Message(result.initiatorMessage());
         message.addVariable("$player", arguments[0]);
         message.addVariable("$world", world);
@@ -65,11 +65,11 @@ public class AdminBalanceCommand implements CommandExecution {
           message.addVariable("$amount", transaction.recipientBalance().getAmount().toPlainString());
         }
         message.translate(world, IDFinder.getID(sender));
-        TNE.debug("===END AdminBalanceCommand  ===");
+        TNECore.log().debug("===END AdminBalanceCommand  ===");
         return;
       }
       MISCUtils.help(sender, label, arguments);
-      TNE.debug("===END AdminBalanceCommand  ===");
+      TNECore.log().debug("===END AdminBalanceCommand  ===");
     });
     return true;
   }

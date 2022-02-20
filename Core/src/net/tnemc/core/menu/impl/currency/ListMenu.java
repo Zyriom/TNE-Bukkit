@@ -1,6 +1,6 @@
 package net.tnemc.core.menu.impl.currency;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.currency.TNECurrency;
 import net.tnemc.core.menu.Menu;
 import net.tnemc.core.menu.icons.curselection.CurrencyIcon;
@@ -26,7 +26,7 @@ public class ListMenu extends Menu {
   @Override
   public Inventory buildInventory(Player player) {
 
-    TNE.debug("==== START ListMenu.buildInventory ====");
+    TNECore.log().debug("==== START ListMenu.buildInventory ====");
 
     int i = 0;
     for(TNECurrency currency : TNE.instance().api().getCurrencies()) {

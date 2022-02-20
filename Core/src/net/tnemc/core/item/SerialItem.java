@@ -1,6 +1,6 @@
 package net.tnemc.core.item;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.utils.MISCUtils;
 import net.tnemc.core.item.data.BannerData;
 import net.tnemc.core.item.data.BookData;
@@ -107,45 +107,45 @@ public class SerialItem {
 
   private void buildData(ItemStack stack) {
     if(isShulker(stack.getType())) {
-      TNE.debug("Is shulker!!");
-      TNE.debug("shulker");
+      TNECore.log().debug("Is shulker!!");
+      TNECore.log().debug("shulker");
       data = new ShulkerData();
     } else {
       ItemMeta meta = stack.getItemMeta();
       if (meta instanceof PotionMeta) {
-        TNE.debug("Potion");
+        TNECore.log().debug("Potion");
         data = new SerialPotionData();
       } else if (meta instanceof BookMeta) {
-        TNE.debug("Book");
+        TNECore.log().debug("Book");
         data = new BookData();
       } else if (meta instanceof BannerMeta) {
-        TNE.debug("Banner");
+        TNECore.log().debug("Banner");
         data = new BannerData();
       } else if (meta instanceof LeatherArmorMeta) {
-        TNE.debug("leather");
+        TNECore.log().debug("leather");
         data = new LeatherData();
       } else if (meta instanceof SkullMeta) {
-        TNE.debug("skull");
+        TNECore.log().debug("skull");
         data = new SkullData();
       } else if (meta instanceof MapMeta) {
-        TNE.debug("map");
+        TNECore.log().debug("map");
         data = new MapData();
       } else if (meta instanceof EnchantmentStorageMeta) {
-        TNE.debug("enchantment");
+        TNECore.log().debug("enchantment");
         data = new EnchantStorageData();
       } else if (meta instanceof FireworkMeta) {
-        TNE.debug("Firework");
+        TNECore.log().debug("Firework");
         data = new FireworkData();
       } else if (meta instanceof FireworkEffectMeta) {
-        TNE.debug("Firework Effect");
+        TNECore.log().debug("Firework Effect");
         data = new FireworkEffectData();
       } else if(meta instanceof TropicalFishBucketMeta) {
-        TNE.debug("fish bucket");
+        TNECore.log().debug("fish bucket");
         data = new TropicalFishBucketData();
       }
     }
     if(data != null){
-      TNE.debug("Data != null");
+      TNECore.log().debug("Data != null");
       data.initialize(stack);
     }
   }
@@ -250,30 +250,30 @@ public class SerialItem {
   }
 
   public JSONObject toJSON() {
-    TNE.debug("toJSON");
+    TNECore.log().debug("toJSON");
     JSONObject json = new JSONObject();
     json.put("slot", slot);
-    TNE.debug("slot");
+    TNECore.log().debug("slot");
     json.put("material", material.name());
-    TNE.debug("material");
+    TNECore.log().debug("material");
     json.put("amount", amount);
-    TNE.debug("amount");
+    TNECore.log().debug("amount");
     if(display != null && !display.equalsIgnoreCase("")) json.put("display", display);
-    TNE.debug("display");
+    TNECore.log().debug("display");
     json.put("damage", damage);
-    TNE.debug("damage");
+    TNECore.log().debug("damage");
     if(MISCUtils.isOneFourteen() && customModelData > 0) json.put("modelData", customModelData);
-    TNE.debug("modelData");
+    TNECore.log().debug("modelData");
     if(lore != null && lore.size() > 0) json.put("lore", String.join(",", lore));
-    TNE.debug("lore");
+    TNECore.log().debug("lore");
 
     if(flags != null && flags.size() > 0) json.put("flags", String.join(",", flags));
 
     JSONObject object = new JSONObject();
     enchantments.forEach(object::put);
-    TNE.debug("enchantments obj");
+    TNECore.log().debug("enchantments obj");
     json.put("enchantments", object);
-    TNE.debug("enchantments");
+    TNECore.log().debug("enchantments");
 
     JSONObject attr = new JSONObject();
 
@@ -305,32 +305,32 @@ public class SerialItem {
   }
 
   public static SerialItem fromJSON(JSONObject json) {
-    TNE.debug(json.toJSONString());
-    TNE.debug("FROM JSON MOTHER FUCKER");
+    TNECore.log().debug(json.toJSONString());
+    TNECore.log().debug("FROM JSON MOTHER FUCKER");
     final JSONHelper helper = new JSONHelper(json);
-    TNE.debug("JSON: " + helper.toString());
-    TNE.debug("fromJSON");
+    TNECore.log().debug("JSON: " + helper.toString());
+    TNECore.log().debug("fromJSON");
     Material material = Material.matchMaterial(helper.getString("material"));
-    TNE.debug("Material: " + material.name());
+    TNECore.log().debug("Material: " + material.name());
     ItemStack stack = new ItemStack(material, helper.getInteger("amount"));
-    TNE.debug("Stack Created");
-    TNE.debug("Stack amount");
+    TNECore.log().debug("Stack Created");
+    TNECore.log().debug("Stack amount");
     ItemMeta meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
-    TNE.debug("Meta Class: " + meta.getClass().getName());
-    TNE.debug("Stack meta");
-    TNE.debug("Stack metaz");
-    TNE.debug(json.toJSONString());
+    TNECore.log().debug("Meta Class: " + meta.getClass().getName());
+    TNECore.log().debug("Stack meta");
+    TNECore.log().debug("Stack metaz");
+    TNECore.log().debug(json.toJSONString());
     if(helper.has("display") && !helper.isNull("display") && !helper.getString("display").equalsIgnoreCase("")) {
       meta.setDisplayName(helper.getString("display"));
     }
-    TNE.debug("Stack display");
+    TNECore.log().debug("Stack display");
 
     if(MISCUtils.isOneFourteen() && helper.has("modelData")) {
       meta.setCustomModelData(helper.getInteger("modelData"));
     }
 
     if(helper.has("lore")) meta.setLore(new ArrayList<>(Arrays.asList((helper.getString("lore")).split(","))));
-    TNE.debug("Stack lore");
+    TNECore.log().debug("Stack lore");
 
     if(helper.has("flags")) {
       List<String> parsedFlags = new ArrayList<>(Arrays.asList((helper.getString("flags")).split(",")));
@@ -341,7 +341,7 @@ public class SerialItem {
         }
       }
     }
-    TNE.debug("Stack flags");
+    TNECore.log().debug("Stack flags");
 
     if(json.containsKey("attributes")) {
       JSONObject attr = (JSONObject)json.get("attributes");
@@ -357,31 +357,31 @@ public class SerialItem {
                 EquipmentSlot.valueOf(mod.getString("slot"))));
       });
     }
-    TNE.debug("Stack attributes");
+    TNECore.log().debug("Stack attributes");
 
     stack.setItemMeta(meta);
 
     if(json.containsKey("enchantments")) {
-      TNE.debug("Enchants: " + json.get("enchantments"));
+      TNECore.log().debug("Enchants: " + json.get("enchantments"));
       JSONObject enchants = (JSONObject)json.get("enchantments");
       enchants.forEach((key, value) -> {
-        TNE.debug("Name: " + key);
-        TNE.debug("Integer: " + value);
+        TNECore.log().debug("Name: " + key);
+        TNECore.log().debug("Integer: " + value);
         stack.addUnsafeEnchantment(Enchantment.getByName(String.valueOf(key)), Integer.valueOf(String.valueOf(value)));
-        TNE.debug("Enchants Size: " + stack.getEnchantments().size());
+        TNECore.log().debug("Enchants Size: " + stack.getEnchantments().size());
       });
     }
-    TNE.debug("Stack enchants");
+    TNECore.log().debug("Stack enchants");
 
     stack.setDurability(helper.getShort("damage"));
     SerialItem serial = new SerialItem(stack, helper.getInteger("slot"));
     if(helper.has("data")) {
       serial.getData().readJSON(helper.getHelper("data"));
-      TNE.debug("Post readJSON");
+      TNECore.log().debug("Post readJSON");
       serial.getData().build(stack);
-      TNE.debug("Post build");
+      TNECore.log().debug("Post build");
     }
-    TNE.debug("Finished reading item's JSON");
+    TNECore.log().debug("Finished reading item's JSON");
     return serial;
   }
 

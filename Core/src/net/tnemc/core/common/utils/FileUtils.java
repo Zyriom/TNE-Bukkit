@@ -14,6 +14,12 @@ import java.io.File;
  */
 public class FileUtils {
 
+  /**
+   * Used to get an array of all files in a directory with a specific extension.
+   * @param directory The directory to search.
+   * @param extension The extension we are looking for.
+   * @return The array of {@link File} objects that have the extension matching the one we are searching for.
+   */
   public static File[] getByEXT(final File directory, final String extension) {
     return directory.listFiles((dir, name) -> name.endsWith(extension));
   }

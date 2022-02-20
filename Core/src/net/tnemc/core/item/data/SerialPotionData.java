@@ -1,6 +1,6 @@
 package net.tnemc.core.item.data;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.item.JSONHelper;
 import net.tnemc.core.item.SerialItemData;
 import org.bukkit.Color;
@@ -52,11 +52,11 @@ public class SerialPotionData implements SerialItemData {
 
   @Override
   public ItemStack build(ItemStack stack) {
-    TNE.debug("Potion Meta Building.");
-    TNE.debug("Stack null: " + (stack == null));
-    TNE.debug("Potion Type needed: " + type);
-    TNE.debug("Potion Type needed: " + PotionType.valueOf(type).name());
-    TNE.debug("Valid: " + valid);
+    TNECore.log().debug("Potion Meta Building.");
+    TNECore.log().debug("Stack null: " + (stack == null));
+    TNECore.log().debug("Potion Type needed: " + type);
+    TNECore.log().debug("Potion Type needed: " + PotionType.valueOf(type).name());
+    TNECore.log().debug("Valid: " + valid);
     if(valid) {
       PotionMeta meta = (PotionMeta)stack.getItemMeta();
       if(color != null) meta.setColor(color);
@@ -65,7 +65,7 @@ public class SerialPotionData implements SerialItemData {
       meta.setBasePotionData(data);
       stack.setItemMeta(meta);
     }
-    TNE.debug("Stack null: " + (stack == null));
+    TNECore.log().debug("Stack null: " + (stack == null));
     return stack;
   }
 
@@ -99,10 +99,10 @@ public class SerialPotionData implements SerialItemData {
   public void readJSON(JSONHelper json) {
     valid = true;
     customEffects = new ArrayList<>();
-    TNE.debug("Potion Data Reading Start");
+    TNECore.log().debug("Potion Data Reading Start");
     type = json.getString("type");
-    TNE.debug("Type?: " + json.has("type"));
-    TNE.debug("Type: " + type);
+    TNECore.log().debug("Type?: " + json.has("type"));
+    TNECore.log().debug("Type: " + type);
     if (json.has("colour")) color = Color.fromRGB(json.getInteger("colour"));
     extended = json.getBoolean("extended");
     upgraded = json.getBoolean("upgraded");
@@ -125,6 +125,6 @@ public class SerialPotionData implements SerialItemData {
       }
     }
     customEffects.addAll(newEffects);
-    TNE.debug("Potion Data Reading End");
+    TNECore.log().debug("Potion Data Reading End");
   }
 }

@@ -2,7 +2,7 @@ package net.tnemc.core.commands.money;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.TNEAccount;
@@ -90,7 +90,7 @@ public class MoneySetCommand implements CommandExecution {
           return;
         }
 
-        TNE.debug("MoneySetCommand Currency: " + currencyName);
+        TNECore.log().debug("MoneySetCommand Currency: " + currencyName);
         final TNECurrency currency = TNE.manager().currencyManager().get(world, currencyName);
 
 
@@ -117,16 +117,16 @@ public class MoneySetCommand implements CommandExecution {
           value = value.setScale(0, BigDecimal.ROUND_FLOOR);
         }
 
-        TNE.debug("Value: " + value.toPlainString());
+        TNECore.log().debug("Value: " + value.toPlainString());
         final BigDecimal balance = account.getHoldings(world, currency);
-        TNE.debug("Balance: " + balance.toPlainString());
+        TNECore.log().debug("Balance: " + balance.toPlainString());
         final TransactionChargeType type = (balance.compareTo(value) >= 0)? TransactionChargeType.LOSE
             : TransactionChargeType.GAIN;
-        TNE.debug("ChargeType: " + type.name());
+        TNECore.log().debug("ChargeType: " + type.name());
 
         final BigDecimal newBalance = (type.equals(TransactionChargeType.GAIN))? value.subtract(balance) : balance.subtract(value);
 
-        TNE.debug("New Balance: " + newBalance.toPlainString());
+        TNECore.log().debug("New Balance: " + newBalance.toPlainString());
 
         TNETransaction transaction = new TNETransaction(TNE.manager().getAccount(IDFinder.getID(sender)), account, world, TNE.transactionManager().getType("set"));
         transaction.setRecipientCharge(new TransactionCharge(world, currency, newBalance, type));

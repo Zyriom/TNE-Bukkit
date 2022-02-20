@@ -18,7 +18,6 @@ package net.tnemc.core.common.configurations;
 
 import com.github.tnerevival.TNELib;
 import net.tnemc.config.CommentedConfiguration;
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.WorldFinder;
 

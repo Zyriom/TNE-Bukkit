@@ -2,7 +2,7 @@ package net.tnemc.core.commands.admin;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.AccountStatus;
@@ -34,12 +34,12 @@ public class AdminStatusCommand implements CommandExecution {
         TNEAccount acc = TNE.manager().getAccount(target);
 
         AccountStatus status = (arguments.length >= 2)? AccountStatus.fromName(arguments[1]) : acc.getStatus();
-        TNE.debug("AdminStatusCommand.java(71): status != null - " + (status != null));
-        TNE.debug("AdminStatusCommand.java(72): acc.getStatus != null - " + (acc.getStatus() != null));
+        TNECore.log().debug("AdminStatusCommand.java(71): status != null - " + (status != null));
+        TNECore.log().debug("AdminStatusCommand.java(72): acc.getStatus != null - " + (acc.getStatus() != null));
         boolean changed = !status.getName().equalsIgnoreCase(acc.getStatus().getName());
-        TNE.debug("AccountStatus: " + acc.getStatus().getName());
-        TNE.debug("Status: " + status.getName());
-        TNE.debug("Changed?: " + changed);
+        TNECore.log().debug("AccountStatus: " + acc.getStatus().getName());
+        TNECore.log().debug("Status: " + status.getName());
+        TNECore.log().debug("Changed?: " + changed);
 
         if(changed) {
           acc.setStatus(status);

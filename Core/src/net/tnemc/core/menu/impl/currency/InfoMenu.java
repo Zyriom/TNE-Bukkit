@@ -1,6 +1,5 @@
 package net.tnemc.core.menu.impl.currency;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.common.api.IDFinder;
 import net.tnemc.core.item.ItemStackBuilder;
 import net.tnemc.core.menu.Menu;

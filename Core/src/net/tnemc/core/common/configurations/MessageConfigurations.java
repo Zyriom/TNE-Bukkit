@@ -1,8 +1,9 @@
 package net.tnemc.core.common.configurations;
 
 import net.tnemc.config.CommentedConfiguration;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.api.IDFinder;
+import net.tnemc.core.common.compatibility.log.DebugLevel;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,8 +51,11 @@ public class MessageConfigurations extends Configuration {
   }
 
   public void loadLanguages() {
-    File directory = new File(TNE.instance().getDataFolder(), "languages");
-    if(!directory.exists()) directory.mkdir();
+    File directory = new File(TNECore.directory(), "languages");
+    if(!directory.exists() && directory.mkdir()) {
+      TNECore.log().error("Failed to load languages, directory doesn't exist.", DebugLevel.STANDARD);
+    }
+
     File[] langFiles = directory.listFiles((dir, name) -> name.endsWith(".yml"));
 
     if(langFiles != null) {
@@ -61,13 +65,13 @@ public class MessageConfigurations extends Configuration {
         try {
           configuration = new CommentedConfiguration(new InputStreamReader(new FileInputStream(langFile), "UTF8"), null);
         } catch (Exception ignore) {
-          TNE.debug("Failed to load language: " + name);
+          TNECore.log().debug("Failed to load language: " + name);
         }
 
         if(configuration != null) {
           Language lang = new Language(name, configuration);
           lang.getConfiguration().load(false);
-          TNE.debug("Loaded language: " + lang);
+          TNECore.log().debug("Loaded language: " + lang);
           languages.put(name, lang);
         }
       }
@@ -86,7 +90,7 @@ public class MessageConfigurations extends Configuration {
     if(languages.containsKey(language)) {
       Language lang = languages.get(language);
       if(lang.hasTranslation(node)) {
-        TNE.debug("Returning translation for language  \"" + language + "\".");
+        TNECore.log().debug("Returning translation for language  \"" + language + "\".");
         return lang.getTranslation(node);
       }
     }

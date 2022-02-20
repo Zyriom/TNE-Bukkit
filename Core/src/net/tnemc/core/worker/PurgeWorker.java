@@ -1,6 +1,6 @@
 package net.tnemc.core.worker;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import org.bukkit.Bukkit;
 
 import java.util.concurrent.TimeUnit;
@@ -32,7 +32,7 @@ public class PurgeWorker implements Runnable {
       try {
         plugin.getSaveManager().save();
       } catch(Exception ignore) {
-        TNE.logger().warning("Issue occurred while attempting to purge data");
+        TNECore.log().warning("Issue occurred while attempting to purge data");
       }
     });
     try {

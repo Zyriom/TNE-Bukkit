@@ -1,6 +1,6 @@
 package net.tnemc.core.menu.icons.display;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.api.IDFinder;
 import net.tnemc.core.common.currency.TNECurrency;
@@ -42,9 +42,9 @@ public class DisplayCurrencyIcon extends Icon {
     String world = (String)TNE.menuManager().getViewerData(initiatorID, "action_world");
     TNECurrency cur = TNE.manager().currencyManager().get(world, currency);
 
-    TNE.debug("InitiatorID Null: " + (initiatorID == null));
-    TNE.debug("ID Null: " + (id == null));
-    TNE.debug("World Null: " + (world == null));
+    TNECore.log().debug("InitiatorID Null: " + (initiatorID == null));
+    TNECore.log().debug("ID Null: " + (id == null));
+    TNECore.log().debug("World Null: " + (world == null));
     TNETransaction transaction = new TNETransaction(TNE.manager().getAccount(initiatorID), TNE.manager().getAccount(id), world, TNE.transactionManager().getType("inquiry"));
     transaction.setRecipientCharge(new TransactionCharge(world, cur, BigDecimal.ZERO));
     TransactionResult result = transaction.perform();

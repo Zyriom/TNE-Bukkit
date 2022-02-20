@@ -1,9 +1,7 @@
 package net.tnemc.core.common.currency.loader;
 
 import net.tnemc.config.CommentedConfiguration;
-import net.tnemc.core.TNE;
 import net.tnemc.core.TNECore;
-import net.tnemc.core.common.CurrencyManager;
 import net.tnemc.core.common.currency.CurrencyLoader;
 import net.tnemc.core.common.currency.CurrencyNote;
 import net.tnemc.core.common.currency.ItemTier;
@@ -20,8 +18,6 @@ import net.tnemc.core.event.currency.TNECurrencyLoadEvent;
 import net.tnemc.core.event.currency.TNECurrencyTierLoadedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -61,12 +57,12 @@ public class AdvancedCurrencyLoader implements CurrencyLoader {
           return;
         }
 
-        TNE.debug("[Loop]Loading Currency: " + curFile.getName() + " for world: " + TNE.instance().defaultWorld);
+        TNECore.log().debug("[Loop]Loading Currency: " + curFile.getName() + " for world: " + TNE.instance().defaultWorld);
         final String identifier = config.getString("Info.Identifier");
 
 
         //OP
-        Permission give = new Permission("tne.money.give." + identifier, "Grants access to /money give for currency: " + identifier, PermissionDefault.OP);
+        /*Permission give = new Permission("tne.money.give." + identifier, "Grants access to /money give for currency: " + identifier, PermissionDefault.OP);
         give.addParent(CurrencyManager.giveParent, true);
         Bukkit.getServer().getPluginManager().addPermission(give);
 
@@ -89,7 +85,7 @@ public class AdvancedCurrencyLoader implements CurrencyLoader {
 
         Permission pay = new Permission("tne.money.pay." + identifier, "Grants access to /money pay for currency: " + identifier, PermissionDefault.TRUE);
         pay.addParent(CurrencyManager.payParent, true);
-        Bukkit.getServer().getPluginManager().addPermission(pay);
+        Bukkit.getServer().getPluginManager().addPermission(pay);*/
 
         //Currency Info configs.
         final String single = config.getString("Info.Major_Single", "Dollar");
@@ -139,9 +135,9 @@ public class AdvancedCurrencyLoader implements CurrencyLoader {
         //Currency Conversion configs.
         final Double rate = config.getDouble("Conversion.Rate", 1.0);
 
-        //TNE.debug(cur + ": " + format);
-        //TNE.debug(cur + ": " + decimalPlaces);
-        //TNE.debug(cur + ": " + symbol);
+        //TNECore.log().debug(cur + ": " + format);
+        //TNECore.log().debug(cur + ": " + decimalPlaces);
+        //TNECore.log().debug(cur + ": " + symbol);
 
         if(worlds == null) worlds = new ArrayList<>();
         if(worlds.size() < 1) worlds.add(TNE.instance().defaultWorld);
@@ -192,12 +188,12 @@ public class AdvancedCurrencyLoader implements CurrencyLoader {
       }
       return;
     }
-    TNE.logger().warning("Unable to locate the currencies directory. Please validate that it exists.");
+    TNECore.log().warning("Unable to locate the currencies directory. Please validate that it exists.");
   }
 
   @Override
   public boolean loadTiers(TNECurrency currency) {
-    final File directory = new File(TNE.instance().getDataFolder(), "currencies/" + currency.getIdentifier());
+    final File directory = new File(TNECore.directory(), "currencies/" + currency.getIdentifier());
 
     if(directory.exists()) {
       final File[] tiers = MISCUtils.getYAMLs(directory);
@@ -231,7 +227,7 @@ public class AdvancedCurrencyLoader implements CurrencyLoader {
             }
 
             if(config.contains("Options.Enchantments")) {
-              //TNE.debug("Setting enchantments list: " + config.getStringList("Options.Enchantments").toString());
+              //TNECore.log().debug("Setting enchantments list: " + config.getStringList("Options.Enchantments").toString());
               item.setEnchantments(config.getStringList("Options.Enchantments"));
             }
 
@@ -290,10 +286,10 @@ public class AdvancedCurrencyLoader implements CurrencyLoader {
         }
         return true;
       }
-      TNE.logger().warning("No tiers found for currency: " + currency.getIdentifier());
+      TNECore.log().warning("No tiers found for currency: " + currency.getIdentifier());
       return false;
     }
-    TNE.logger().warning("Directory currencies/" + currency.getIdentifier() + " does not exist.");
+    TNECore.log().warning("Directory currencies/" + currency.getIdentifier() + " does not exist.");
     return false;
   }
 }

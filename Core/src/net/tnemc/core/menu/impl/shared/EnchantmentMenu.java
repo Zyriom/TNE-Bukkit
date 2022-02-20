@@ -1,6 +1,5 @@
 package net.tnemc.core.menu.impl.shared;
 
-import net.tnemc.core.TNE;
 import net.tnemc.core.menu.Menu;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;

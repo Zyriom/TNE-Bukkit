@@ -1,6 +1,6 @@
 package net.tnemc.core.item.data;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.item.JSONHelper;
 import net.tnemc.core.item.SerialItemData;
 import org.bukkit.DyeColor;
@@ -76,6 +76,6 @@ public class BannerData implements SerialItemData {
           PatternType.getByIdentifier(helperObj.getString("pattern")));
       patternList.add(pattern);
     });
-    TNE.debug("Banner Data End");
+    TNECore.log().debug("Banner Data End");
   }
 }

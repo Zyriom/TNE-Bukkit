@@ -2,7 +2,7 @@ package net.tnemc.core.commands.admin;
 
 import net.tnemc.commands.core.CommandExecution;
 import net.tnemc.commands.core.provider.PlayerProvider;
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.TNEAccount;
@@ -38,7 +38,7 @@ public class AdminCreateCommand implements CommandExecution {
           try {
             initial = new BigDecimal(arguments[1]);
           } catch(Exception ex) {
-            TNE.debug("Invalid amount: " + arguments[1]);
+            TNECore.log().debug("Invalid amount: " + arguments[1]);
           }
         }
         TNEAccount acc = new TNEAccount(id, arguments[0]);

@@ -1,6 +1,5 @@
 package net.tnemc.core.common.module;
 
-import net.tnemc.core.TNE;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 

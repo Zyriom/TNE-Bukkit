@@ -13,6 +13,7 @@ package net.tnemc.core;
 
 import net.tnemc.core.common.EconomyManager;
 import net.tnemc.core.common.ServerInformation;
+import net.tnemc.core.common.compatibility.LogProvider;
 import net.tnemc.core.common.compatibility.PlayerProvider;
 import net.tnemc.core.common.compatibility.ServerConnector;
 import net.tnemc.core.common.io.StorageManager;
@@ -36,6 +37,7 @@ public class TNECore {
   private StorageManager storageManager;
   private ServerConnector connector;
   private ServerInformation information;
+  private LogProvider logger;
 
   private EconomyManager manager;
 
@@ -59,6 +61,15 @@ public class TNECore {
    */
   public static ServerInformation info() {
     return instance.information;
+  }
+
+  /**
+   * The implementation's {@link LogProvider}.
+   *
+   * @return The log provider.
+   */
+  public static LogProvider log() {
+    return instance.logger;
   }
 
   public static StorageManager storage() {

@@ -12,7 +12,15 @@ package net.tnemc.core.common.currency;
  */
 public interface CurrencyLoader {
 
+  /**
+   * Loads all currencies.
+   */
   void loadCurrencies();
 
-  boolean loadTiers(TNECurrency currency);
+  /**
+   * Loads all denominations for the specified currency.
+   * @param currency The currency to load the denominations of.
+   * @return
+   */
+  boolean loadDenominations(Currency currency);
 }

@@ -1,6 +1,6 @@
 package net.tnemc.core.menu.impl.player;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.WorldFinder;
 import net.tnemc.core.common.api.IDFinder;
@@ -30,12 +30,12 @@ public class DisplayMenu extends Menu {
 
   @Override
   public Inventory buildInventory(Player player) {
-    TNE.debug("=====START DisplayScreen.initializeCurrencies =====");
+    TNECore.log().debug("=====START DisplayScreen.initializeCurrencies =====");
     String world = (String)TNE.menuManager().getViewerData(IDFinder.getID(player), "action_world");
     UUID p = (UUID)TNE.menuManager().getViewerData(IDFinder.getID(player), "action_player");
 
-    TNE.debug("Player: " + p);
-    TNE.debug("World: " + world);
+    TNECore.log().debug("Player: " + p);
+    TNECore.log().debug("World: " + world);
     if(world == null) world = WorldFinder.getWorld(p, WorldVariant.BALANCE);
     int i = 1;
     for(TNECurrency currency : TNE.instance().api().getCurrencies(world)) {
@@ -48,8 +48,8 @@ public class DisplayMenu extends Menu {
     if(size < 10) rows = 1;
     else rows = (size / 9);
 
-    TNE.debug("Icons: " + icons.size());
-    TNE.debug("Rows: " + getRows());
+    TNECore.log().debug("Icons: " + icons.size());
+    TNECore.log().debug("Rows: " + getRows());
 
     return super.buildInventory(player);
   }

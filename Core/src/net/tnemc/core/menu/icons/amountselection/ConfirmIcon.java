@@ -1,6 +1,6 @@
 package net.tnemc.core.menu.icons.amountselection;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.Message;
 import net.tnemc.core.common.api.IDFinder;
 import net.tnemc.core.common.currency.TNECurrency;
@@ -31,7 +31,7 @@ public class ConfirmIcon extends Icon {
 
   @Override
   public void onClick(String menu, Player player, ClickType clickType) {
-    TNE.debug("=====START Confirm.onClick =====");
+    TNECore.log().debug("=====START Confirm.onClick =====");
     UUID id = IDFinder.getID(player);
     String world = (String)TNE.menuManager().getViewerData(id, "action_world");
     UUID recipient = (UUID) TNE.menuManager().getViewerData(id, "action_player");
@@ -40,9 +40,9 @@ public class ConfirmIcon extends Icon {
     BigDecimal amount = (BigDecimal)TNE.menuManager().getViewerData(id, "action_amount");
     TNECurrency cur = TNE.manager().currencyManager().get(world, currency);
 
-    TNE.debug("recipient Null: " + (recipient == null));
-    TNE.debug("ID Null: " + (id == null));
-    TNE.debug("World Null: " + (world == null));
+    TNECore.log().debug("recipient Null: " + (recipient == null));
+    TNECore.log().debug("ID Null: " + (id == null));
+    TNECore.log().debug("World Null: " + (world == null));
     TNETransaction transaction = new TNETransaction(TNE.manager().getAccount(id), TNE.manager().getAccount(recipient), world, TNE.transactionManager().getType(type));
     TransactionCharge recipientCharge = new TransactionCharge(world, cur, amount);
     if(type.equalsIgnoreCase("pay")) {

@@ -1,6 +1,6 @@
 package net.tnemc.core.menu.impl.balance;
 
-import net.tnemc.core.TNE;
+import net.tnemc.core.TNECore;
 import net.tnemc.core.common.WorldVariant;
 import net.tnemc.core.common.account.TNEAccount;
 import net.tnemc.core.common.account.WorldFinder;
@@ -33,13 +33,13 @@ public class BalanceMenu extends Menu {
 
   @Override
   public Inventory buildInventory(Player player) {
-    TNE.debug("=====START DisplayScreen.initializeCurrencies =====");
+    TNECore.log().debug("=====START DisplayScreen.initializeCurrencies =====");
     String world = (String)TNE.menuManager().getViewerData(IDFinder.getID(player), "action_world");
 
     final TNEAccount account = TNE.manager().getAccount(player.getUniqueId());
 
-    TNE.debug("Player: " + player);
-    TNE.debug("World: " + world);
+    TNECore.log().debug("Player: " + player);
+    TNECore.log().debug("World: " + world);
     if(world == null) world = WorldFinder.getWorld(player, WorldVariant.ACTUAL);
     int i = 1;
     for(TNECurrency currency : TNE.instance().api().getCurrencies(world)) {
