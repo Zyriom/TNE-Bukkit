@@ -28,13 +28,8 @@ public class PlayerPreLoginListener implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPreJoin(AsyncPlayerPreLoginEvent event) {
     if(TNE.instance().itemConfiguration() == null) {
-      event.setKickMessage(ChatColor.RED + "The New Economy is still initializing.");
+      event.setKickMessage(ChatColor.RED + "Please wait for the server to prepare.");
       event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-    }
-
-    if(TNE.isDuper(event.getUniqueId().toString()) || TNE.isDuper(event.getAddress().getHostAddress())) {
-      event.setKickMessage(ChatColor.RED + "The New Economy Global Ban: You've been identified as a known currency duper. Appeal at http://discord.tnemc.net");
-      event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_BANNED);
     }
   }
 }
